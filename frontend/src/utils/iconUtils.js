@@ -14,15 +14,15 @@ import {
 } from '@mui/material/colors'
 
 const re = /(?:\.([^.]+))?$/
-const getIcon = (filename, isDir) => {
+const getIcon = (filename, isDir, size = 30) => {
   if (isDir) {
-    return <FolderIcon sx={{ color: blue[400] }} />
+    return <FolderIcon sx={{ color: blue[400], fontSize: size }} />
   }
 
   let ext = re.exec(filename)[1]
 
   if (!ext) {
-    return <DescriptionIcon sx={{ color: blueGrey[400] }} />
+    return <DescriptionIcon sx={{ color: blueGrey[400], fontSize: size }} />
   }
 
   ext = ext.toLowerCase()
@@ -34,7 +34,7 @@ const getIcon = (filename, isDir) => {
     case 'gif':
     case 'png':
     case 'bmp':
-      return <ImageIcon sx={{ color: orange[400] }} />
+      return <ImageIcon sx={{ color: orange[400], fontSize: size }} />
 
     case 'wmv':
     case 'mp4':
@@ -45,7 +45,7 @@ const getIcon = (filename, isDir) => {
     case 'swf':
     case 'mkv':
     case 'webm':
-      return <VideoFileIcon sx={{ color: deepOrange[400] }} />
+      return <VideoFileIcon sx={{ color: deepOrange[400], fontSize: size }} />
 
     case 'aac':
     case 'm4a':
@@ -53,12 +53,12 @@ const getIcon = (filename, isDir) => {
     case 'wav':
     case 'flac':
     case 'mp3':
-      return <AudioFileIcon sx={{ color: teal[400] }} />
+      return <AudioFileIcon sx={{ color: teal[400], fontSize: size }} />
     case 'pdf':
-      return <PictureAsPdfIcon sx={{ color: red[400] }} />
+      return <PictureAsPdfIcon sx={{ color: red[400], fontSize: size }} />
 
     default:
-      return <DescriptionIcon sx={{ color: blueGrey[400] }} />
+      return <DescriptionIcon sx={{ color: blueGrey[400], fontSize: size }} />
   }
 }
 

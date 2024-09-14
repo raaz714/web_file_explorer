@@ -4,7 +4,6 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import getDashboardTheme from '../theme/getDashboardTheme'
-import AppNavbar from './AppNavbar'
 import Header from './Header'
 import MainGrid from './MainGrid'
 import SideMenu from './SideMenu'
@@ -12,6 +11,7 @@ import GlobalFrame from './GlobalFrame'
 import PathContextProvider from '../contexts/PathContext'
 import SelectedFilesContextProvider from '../contexts/SelectedFilesContext'
 import InputFileUpload from './UploadPane'
+import ViewContextProvider from '../contexts/ViewContext'
 
 const AppView = () => {
   const [mode, setMode] = React.useState('light')
@@ -53,36 +53,38 @@ const AppView = () => {
       <ThemeProvider theme={showCustomTheme ? dashboardTheme : defaultTheme}>
         <PathContextProvider>
           <SelectedFilesContextProvider>
-            <CssBaseline enableColorScheme />
-            <Box sx={{ display: 'flex' }}>
-              <SideMenu />
-              <AppNavbar />
-              {/* Main content */}
-              <Box
-                component='main'
-                sx={(theme) => ({
-                  flexGrow: 1,
-                  backgroundColor: alpha(theme.palette.background.default, 1),
-                  overflow: 'auto',
-                })}
-              >
-                <Stack
-                  spacing={2}
-                  sx={{
-                    alignItems: 'center',
-                    mx: 'auto',
-                    pb: 10,
-                    mt: { xs: 8, md: 2 },
-                    maxWidth: { sm: '100%', md: '1700px' },
-                    minHeight: { sm: '400px', md: '1200px' },
-                  }}
+            <ViewContextProvider>
+              <CssBaseline enableColorScheme />
+              <Box sx={{ display: 'flex' }}>
+                <SideMenu />
+                {/* <AppNavbar /> */}
+                {/* Main content */}
+                <Box
+                  component='main'
+                  sx={(theme) => ({
+                    flexGrow: 1,
+                    backgroundColor: alpha(theme.palette.background.default, 1),
+                    overflow: 'auto',
+                  })}
                 >
-                  <InputFileUpload />
-                  <Header />
-                  <MainGrid />
-                </Stack>
+                  <Stack
+                    spacing={2}
+                    sx={{
+                      alignItems: 'center',
+                      mx: 'auto',
+                      pb: 10,
+                      mt: { xs: 8, md: 2 },
+                      maxWidth: { xs: '90%', xl: '1700px' },
+                      minHeight: { xs: '400px', md: '1200px' },
+                    }}
+                  >
+                    <InputFileUpload />
+                    <Header />
+                    <MainGrid />
+                  </Stack>
+                </Box>
               </Box>
-            </Box>
+            </ViewContextProvider>
           </SelectedFilesContextProvider>
         </PathContextProvider>
       </ThemeProvider>

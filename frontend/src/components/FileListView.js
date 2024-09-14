@@ -5,7 +5,7 @@ import {
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid'
 import { headCells as columns } from '../internals/data/gridData'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { SelectedFilesContext } from '../contexts/SelectedFilesContext'
 
 function CustomToolbar() {
@@ -16,9 +16,8 @@ function CustomToolbar() {
   )
 }
 
-export default function FileListView({ rows }) {
+export const FileListView = ({ rows }) => {
   const [rowSelectionModel, setRowSelectionModel] = useState([])
-  const { pathname } = useLocation()
   const navigate = useNavigate()
   const { selectedFiles, setSelectedFiles } = useContext(SelectedFilesContext)
 
@@ -26,7 +25,7 @@ export default function FileListView({ rows }) {
     console.log(newRowSelectionModel)
     setRowSelectionModel(newRowSelectionModel)
     let filteredRows = rows.filter((i) => newRowSelectionModel.includes(i.id))
-    filteredRows = filteredRows.map((v) => pathname + '/' + v.Name)
+    filteredRows = filteredRows.map((v) => v.Path)
     console.log(filteredRows)
     setSelectedFiles(filteredRows)
   }

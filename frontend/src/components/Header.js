@@ -4,12 +4,14 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import ContentCutIcon from '@mui/icons-material/ContentCut'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
-import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded'
 import NavbarBreadcrumbs from './NavbarBreadcrumbs'
 import MenuButton from './MenuButton'
 import Search from './Search'
 import { Box, IconButton } from '@mui/material'
+import GridViewIcon from '@mui/icons-material/GridView'
+import ViewListIcon from '@mui/icons-material/ViewList'
 import { SelectedFilesContext } from '../contexts/SelectedFilesContext'
+import { ViewContext } from '../contexts/ViewContext'
 
 const FileActionPane = ({
   pastable,
@@ -65,11 +67,13 @@ export default function Header() {
     executeRemove,
   } = useContext(SelectedFilesContext)
 
+  const { view, toggleView } = useContext(ViewContext)
+
   return (
     <Stack
       direction='row'
       sx={{
-        display: { xs: 'none', md: 'flex' },
+        display: { xs: 'flex' },
         width: '100%',
         alignItems: { xs: 'flex-start', md: 'center' },
         justifyContent: 'space-between',
@@ -89,8 +93,8 @@ export default function Header() {
           />
         )}
         <Search />
-        <MenuButton showBadge aria-label='Open notifications'>
-          <NotificationsRoundedIcon />
+        <MenuButton onClick={toggleView} aria-label='Change View'>
+          {view === 'grid' ? <ViewListIcon /> : <GridViewIcon />}
         </MenuButton>
       </Stack>
     </Stack>

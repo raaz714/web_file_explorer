@@ -1,13 +1,16 @@
 import { useContext } from 'react'
 import Grid from '@mui/material/Grid2'
 import Box from '@mui/material/Box'
-import FileListView from './FileListView'
+import { FileListView } from './FileListView'
+import { FileGridView } from './FileGridView'
 import { PathContext } from '../contexts/PathContext'
 import PreviewPane from './PreviewPane'
 import { Typography } from '@mui/material'
+import { ViewContext } from '../contexts/ViewContext'
 
 export default function MainGrid() {
   const { rows, fileInfo } = useContext(PathContext)
+  const { view } = useContext(ViewContext)
   return (
     <Box
       sx={{
@@ -46,8 +49,13 @@ export default function MainGrid() {
       {fileInfo ? (
         <PreviewPane fileInfo={fileInfo} />
       ) : (
-        <Grid container spacing={2} columns={12}>
-          <FileListView rows={rows} />
+        <Grid container spacing={2} columns={12} justifyContent={'center'}>
+          {/* <FileListView rows={rows} /> */}
+          {view === 'grid' ? (
+            <FileGridView rows={rows} />
+          ) : (
+            <FileListView rows={rows} />
+          )}
 
           {/* <Grid size={{ xs: 12, lg: 3 }}>
           <Stack gap={2} direction={{ xs: 'column', sm: 'row', lg: 'column' }}>

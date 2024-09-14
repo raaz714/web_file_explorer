@@ -65,3 +65,16 @@ func ExecuteDelete(filepath string) error {
 func ExecuteRename(oldname, newname string) error {
 	return os.Rename(oldname, newname)
 }
+
+func ExecuteNewFile(filepath string) error {
+	file, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	return nil
+}
+
+func ExecuteNewFolder(filepath string) error {
+	return os.Mkdir(filepath, os.ModePerm)
+}

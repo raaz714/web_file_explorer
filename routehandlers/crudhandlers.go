@@ -3,6 +3,7 @@ package routehandlers
 import (
 	"fmt"
 	"net/http"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 
@@ -109,6 +110,46 @@ func RenameHandler() gin.HandlerFunc {
 			userConfig.Root+"/"+renameObject.NewName,
 		)
 		c.Status(http.StatusOK)
+	}
+	return fn
+}
+
+func NewFileHandler() gin.HandlerFunc {
+	type NewFileObject struct {
+		FolderPath string `json:"folderpath"`
+		FileName   string `json:"filename"`
+	}
+	fn := func(c *gin.Context) {
+		userConfig := config.GetConfig()
+		var newFileObject NewFileObject
+		err := c.BindJSON(&newFileObject)
+		if err != nil {
+			c.AbortWithError(400, err)
+			return
+		}
+		utils.ExecuteNewFile(
+			filepath.Join(userConfig.Root, newFileObject.FolderPath, newFileObject.FileName),
+		)
+	}
+	return fn
+}
+
+func NewFolderHandler() gin.HandlerFunc {
+	type NewFolderObject struct {
+		FolderPath string `json:"folderpath"`
+		FolderName string `json:"foldername"`
+	}
+	fn := func(c *gin.Context) {
+		userConfig := config.GetConfig()
+		var newFolderObject NewFolderObject
+		err := c.BindJSON(&newFolderObject)
+		if err != nil {
+			c.AbortWithError(400, err)
+			return
+		}
+		utils.ExecuteNewFolder(
+			filepath.Join(userConfig.Root, newFolderObject.FolderPath, newFolderObject.FolderName),
+		)
 	}
 	return fn
 }

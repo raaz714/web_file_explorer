@@ -46,6 +46,8 @@ func main() {
 		exeGroup.POST("/cut", routehandlers.CutHandler())
 		exeGroup.POST("/remove", routehandlers.RemoveHandler())
 		exeGroup.POST("/rename", routehandlers.RenameHandler())
+		exeGroup.POST("/newfile", routehandlers.NewFileHandler())
+		exeGroup.POST("/newfolder", routehandlers.NewFolderHandler())
 	}
 
 	router.POST("/upload", routehandlers.UploadHandler())

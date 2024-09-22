@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	"io/fs"
 	"net/http"
 	"path/filepath"
 
@@ -15,10 +16,10 @@ import (
 	"web_file_explorer/routehandlers"
 )
 
+//go:generate npm run build
+
 //go:embed static
 var static embed.FS
-
-//go:generate npm run build
 
 func Options(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", c.Request.Header.Get("Origin"))
@@ -49,7 +50,8 @@ func main() {
 	router.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
 
 	// router.GET("/*relativePath", routehandlers.PathHandler())
-	router.StaticFS("/static", gin.Dir("./static/", false))
+	assetStatic, _ := fs.Sub(static, "static")
+	router.StaticFS("/static", http.FS(assetStatic))
 
 	router.GET("/raw/*filepath", func(c *gin.Context) {
 		paramPath := c.Param("filepath")

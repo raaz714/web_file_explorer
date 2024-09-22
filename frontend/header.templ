@@ -8,7 +8,6 @@ templ Header() {
       <link rel="stylesheet" href="/static/css/tailwind.css" />
 			<script type="text/javascript">
         function handleBodyLoad() {
-          console.log("inside bodyload")
           localStorage.removeItem("wfe_selected")
           const isPastable = localStorage.getItem("wfe_staged_for_cut") || localStorage.getItem("wfe_staged_for_copy")
           console.log("inside bodyload - ", isPastable)

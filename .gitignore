@@ -1,3 +1,4 @@
 *_templ.go
 package-lock.json
-node_modeuls
+node_modules
+static

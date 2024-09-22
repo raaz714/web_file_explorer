@@ -1,14 +1,24 @@
 package main
 
 import (
+	"bytes"
+	"embed"
 	"fmt"
 	"net/http"
+	"path/filepath"
 
+	"github.com/asticode/go-astisub"
 	"github.com/gin-gonic/gin"
 
 	"web_file_explorer/config"
+	"web_file_explorer/gintemplrenderer"
 	"web_file_explorer/routehandlers"
 )
+
+//go:embed static
+var static embed.FS
+
+//go:generate npm run build
 
 func Options(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", c.Request.Header.Get("Origin"))
@@ -35,10 +45,31 @@ func main() {
 	router := gin.Default()
 	router.Use(Options)
 
-	pathGroup := router.Group("/_api")
-	{
-		pathGroup.GET("/*relativePath", routehandlers.PathHandler())
-	}
+	ginHtmlRenderer := router.HTMLRender
+	router.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
+
+	// router.GET("/*relativePath", routehandlers.PathHandler())
+	router.StaticFS("/static", gin.Dir("./static/", false))
+
+	router.GET("/raw/*filepath", func(c *gin.Context) {
+		paramPath := c.Param("filepath")
+		filepath := filepath.Join(userConfig.Root, paramPath)
+		c.File(filepath)
+	})
+	router.GET("/sub/*id", func(c *gin.Context) {
+		subPath := c.Param("id")
+		srtContent, err := astisub.OpenFile(
+			filepath.Join(userConfig.Root, subPath),
+		)
+		if err != nil {
+			c.String(200, "")
+			return
+		}
+
+		var webVTTBuf bytes.Buffer
+		srtContent.WriteToWebVTT(&webVTTBuf)
+		c.String(200, webVTTBuf.String())
+	})
 
 	exeGroup := router.Group("/_execute")
 	{
@@ -52,6 +83,9 @@ func main() {
 
 	router.POST("/upload", routehandlers.UploadHandler())
 
-	router.GET("/search", routehandlers.SearchHandler())
+	router.NoRoute(routehandlers.PathHandler())
+
+	// TODO: search with query param
+	// router.GET("/search", routehandlers.SearchHandler())
 	router.Run(fmt.Sprintf(":%d", userConfig.Port))
 }

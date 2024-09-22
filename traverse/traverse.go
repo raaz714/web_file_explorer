@@ -89,26 +89,11 @@ func (tn TreeNode) All() iter.Seq[any] {
 
 type PathNodeMap map[string]*TreeNode
 
-// Helper function to create a local FileInfo struct from os.FileInfo interface.
-func fileInfoFromInterface(v os.FileInfo, path string, prefixLen int) *FileInfo {
-	// mType, _ := mimetype.DetectFile(path)
-	return &FileInfo{
-		utils.Hash(path),
-		v.Name(),
-		path[prefixLen:],
-		v.IsDir(),
-		v.Size(),
-		// mType.Extension(),
-		// mType.String(),
-		filepath.Ext(v.Name()), "",
-		v.ModTime(),
-	}
-}
-
 var (
 	PathList AllPaths
 	DirTree  *TreeNode
 	PNPData  PathNodeMap
+	// watcher  *fsnotify.Watcher
 )
 
 // Create directory hierarchy.
@@ -117,6 +102,10 @@ func NewTree(root string) (*AllPaths, *TreeNode, *PathNodeMap, error) {
 	if err != nil {
 		return nil, nil, nil, err
 	}
+
+	// creates file watcher
+	// watcher, _ = fsnotify.NewWatcher()
+	// defer watcher.Close()
 
 	userConfig := config.GetConfig()
 	PNPData = PathNodeMap{}
@@ -138,7 +127,11 @@ func NewTree(root string) (*AllPaths, *TreeNode, *PathNodeMap, error) {
 			}
 		}
 
-		fileInfoPopulated := fileInfoFromInterface(info, path, len(userConfig.Root))
+		// if info.IsDir() {
+		// 	watcher.Add(path)
+		// }
+
+		fileInfoPopulated := FileInfoFromInterface(info, path, len(userConfig.Root))
 
 		PathList = append(PathList, fileInfoPopulated)
 		PNPData[path] = &TreeNode{
@@ -163,6 +156,26 @@ func NewTree(root string) (*AllPaths, *TreeNode, *PathNodeMap, error) {
 			parent.Children = append(parent.Children, node)
 		}
 	}
+
+	//
+	// done := make(chan bool)
+
+	//
+	// go func() {
+	// 	for {
+	// 		select {
+	// 		// watch for events
+	// 		case event := <-watcher.Events:
+	// 			fmt.Printf("Path %s, Event %s\n", event.Name, event.Op.String())
+	//
+	// 			// watch for errors
+	// 		case err := <-watcher.Errors:
+	// 			fmt.Println("ERROR", err)
+	// 		}
+	// 	}
+	// }()
+	//
+	// <-done
 
 	return &PathList, DirTree, &PNPData, nil
 }

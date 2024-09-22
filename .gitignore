@@ -1,2 +1,3 @@
-node_modules
-npm-debug.log
+*_templ.go
+package-lock.json
+node_modeuls

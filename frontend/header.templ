@@ -1,0 +1,173 @@
+package frontend
+
+templ Header() {
+	@tailwindHandle.Once() {
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <link rel="stylesheet" href="/static/css/tailwind.css" />
+			<script type="text/javascript">
+        function handleBodyLoad() {
+          console.log("inside bodyload")
+          localStorage.removeItem("wfe_selected")
+          const isPastable = localStorage.getItem("wfe_staged_for_cut") || localStorage.getItem("wfe_staged_for_copy")
+          console.log("inside bodyload - ", isPastable)
+
+          if (isPastable) {
+            document.querySelector("#paste").classList.remove("hidden")
+          }
+        }
+
+        function openSidebar() {
+           document.querySelector("#separator-sidebar").classList.toggle("-translate-x-full");
+        }
+
+				function switchTheme(idx) {
+					let themes = ["auto", "dark", "light"]
+					if (idx === 0) {
+						document.querySelector("body").removeAttribute("data-theme")
+						return
+					}
+					document.querySelector("body").setAttribute("data-theme", themes[idx])
+				}
+
+				function handleSelectEvent(event) {
+					event.preventDefault()
+
+          const pathname = event.target.value
+          const selectedKey = "wfe_selected"
+					console.log(pathname, event.target.checked)
+          let currSelected = new Set(JSON.parse((localStorage.getItem(selectedKey))))
+
+          if (event.target.checked) {
+            currSelected.add(pathname)
+          } else {
+            currSelected.delete(pathname)
+          }
+
+          if (currSelected && currSelected.size > 0) {
+            document.querySelector("#cut-copy-del").classList.remove("hidden")
+            localStorage.setItem(selectedKey, JSON.stringify([...currSelected]))
+          } else {
+            document.querySelector("#cut-copy-del").classList.add("hidden")
+            localStorage.removeItem(selectedKey)
+          }
+				}
+
+        function stageForCopy(event) {
+          const selectedKey = "wfe_selected"
+          const selectedItems = localStorage.getItem(selectedKey)
+          localStorage.removeItem(selectedKey)
+
+          localStorage.setItem("wfe_staged_for_copy", selectedItems)
+          const cards = document.querySelectorAll("#main-view .checkbox")
+          cards.forEach(c => {
+            c.checked = false
+          })
+          document.querySelector("#paste").classList.remove("hidden")
+          document.querySelector("#cut-copy-del").classList.add("hidden")
+        }
+
+        function stageForCut(event) {
+          const selectedKey = "wfe_selected"
+          const selectedItems = localStorage.getItem(selectedKey)
+          localStorage.removeItem(selectedKey)
+
+          localStorage.setItem("wfe_staged_for_cut", selectedItems)
+          const cards = document.querySelectorAll("#main-view .checkbox")
+          cards.forEach(c => {
+            c.checked = false
+          })
+          document.querySelector("#paste").classList.remove("hidden")
+          document.querySelector("#cut-copy-del").classList.add("hidden")
+        }
+
+        function pasteStaged(event) {
+          const dir = window.location.pathname
+          let url = "/_execute/"
+          let pastable = JSON.parse(localStorage.getItem("wfe_staged_for_cut"))
+
+          if (pastable) {
+            url = url + "cut"
+          } else {
+            url = url + "copy"
+            pastable = JSON.parse(localStorage.getItem("wfe_staged_for_copy"))
+          }
+
+          const options = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"destination": dir, "sources": pastable})
+          };
+
+          fetch(url, options)
+            .then(() => {
+              localStorage.removeItem("wfe_staged_for_cut")
+              localStorage.removeItem("wfe_staged_for_copy")
+              window.location.reload()
+            })
+            .catch(err => console.error(err))
+        }
+
+        function removeSelected(event) {
+          const filepaths = localStorage.getItem("wfe_selected")
+          console.log(filepaths)
+          const options = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"filepaths": JSON.parse(filepaths)})
+          };
+
+          fetch('/_execute/remove', options)
+            .then(() => {
+              localStorage.removeItem("wfe_selected")
+              window.location.reload()
+            })
+            .catch(err => console.error(err));
+        }
+
+				function createFolder(event) {
+					event.preventDefault()
+					const folderName = event.target[0].value
+					console.log("Create Folder - ", folderName)
+
+					const options = {
+						method: 'POST',
+						headers: {'Content-Type': 'application/json'},
+						body: JSON.stringify({"folderpath":window.location.pathname,"foldername":folderName})
+					};
+
+					fetch('http://localhost:9876/_execute/newfolder', options)
+						.then(() => {
+              window.location.reload()
+            })
+						.catch(err => console.error(err));
+
+					event.srcElement.reset()
+					new_folder.close()
+				}
+
+				function createFile(event) {
+					event.preventDefault()
+					const fileName = event.target[0].value
+					event.srcElement.reset()
+					new_file.close()
+					console.log("Create File", fileName)
+
+					const options = {
+						method: 'POST',
+						headers: {'Content-Type': 'application/json'},
+						body: JSON.stringify({"folderpath": window.location.pathname,"filename": fileName})
+					};
+
+					fetch('/_execute/newfile', options)
+						.then(() => {
+              window.location.reload()
+            })
+						.catch(err => console.error(err));
+				}
+
+         </script>
+		</head>
+	}
+}

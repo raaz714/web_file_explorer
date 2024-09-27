@@ -12,6 +12,7 @@ import GridViewIcon from '@mui/icons-material/GridView'
 import ViewListIcon from '@mui/icons-material/ViewList'
 import { SelectedFilesContext } from '../contexts/SelectedFilesContext'
 import { ViewContext } from '../contexts/ViewContext'
+import { PathContext } from '../contexts/PathContext'
 
 const FileActionPane = ({
   pastable,
@@ -19,10 +20,11 @@ const FileActionPane = ({
   executePaste,
   executeRemove,
 }) => {
+  const { fetchRowsFromLocation } = useContext(PathContext)
   return pastable.length > 0 ? (
     <IconButton
       aria-label='paste'
-      onClick={() => executePaste()}
+      onClick={() => executePaste(fetchRowsFromLocation)}
       size='small'
       sx={{ mx: 1 }}
     >
@@ -48,7 +50,7 @@ const FileActionPane = ({
       </IconButton>
       <IconButton
         aria-label='delete'
-        onClick={() => executeRemove()}
+        onClick={() => executeRemove(fetchRowsFromLocation)}
         size='small'
         sx={{ mx: 1 }}
       >

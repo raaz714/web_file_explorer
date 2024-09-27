@@ -1,30 +1,30 @@
-import { getDesignTokens } from './themePrimitives';
+import { getDesignTokens } from './themePrimitives'
 import {
-  chartsCustomizations,
+  // chartsCustomizations,
   dataGridCustomizations,
-  datePickersCustomizations,
-  treeViewCustomizations,
+  // datePickersCustomizations,
+  // treeViewCustomizations,
   inputsCustomizations,
-  dataDisplayCustomizations,
-  feedbackCustomizations,
-  navigationCustomizations,
-  surfacesCustomizations,
-} from './customizations';
+  // dataDisplayCustomizations,
+  // feedbackCustomizations,
+  // navigationCustomizations,
+  // surfacesCustomizations,
+} from './customizations'
 
 export default function getDashboardTheme(mode) {
   return {
     ...getDesignTokens(mode),
     components: {
-      ...chartsCustomizations,
+      // ...chartsCustomizations,
       ...dataGridCustomizations,
-      ...datePickersCustomizations,
-      ...treeViewCustomizations,
+      // ...datePickersCustomizations,
+      // ...treeViewCustomizations,
+      // ...inputsCustomizations,
       ...inputsCustomizations,
-      ...inputsCustomizations,
-      ...dataDisplayCustomizations,
-      ...feedbackCustomizations,
-      ...navigationCustomizations,
-      ...surfacesCustomizations,
+      // ...dataDisplayCustomizations,
+      // ...feedbackCustomizations,
+      // ...navigationCustomizations,
+      // ...surfacesCustomizations,
     },
-  };
+  }
 }

@@ -2,9 +2,15 @@ module web_file_explorer
 
 go 1.23
 
-require github.com/gin-gonic/gin v1.10.0
+require (
+	github.com/asticode/go-astisub v0.27.0
+	github.com/gin-gonic/gin v1.10.0
+	github.com/golang-jwt/jwt/v5 v5.2.1
+)
 
 require (
+	github.com/asticode/go-astikit v0.20.0 // indirect
+	github.com/asticode/go-astits v1.8.0 // indirect
 	github.com/bytedance/sonic v1.11.6 // indirect
 	github.com/bytedance/sonic/loader v0.1.1 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect

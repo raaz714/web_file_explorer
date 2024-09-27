@@ -1,7 +1,5 @@
 import * as React from 'react'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles'
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Box from '@mui/material/Box'
 import AppBar from '@mui/material/AppBar'
@@ -25,16 +23,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   flex: '0 0 auto',
 }))
 
-const GlobalFrame = ({
-  showCustomTheme,
-  toggleCustomTheme,
-  mode,
-  toggleColorMode,
-  children,
-}) => {
-  const handleChange = (event) => {
-    toggleCustomTheme(event.target.value === 'custom')
-  }
+const GlobalFrame = ({ mode, toggleColorMode, children }) => {
   const dashboardTheme = createTheme(getDashboardTheme(mode))
 
   return (
@@ -73,19 +62,10 @@ const GlobalFrame = ({
             </IconButton> */}
             <Typography variant='h5'>File Browser</Typography>
             <Box sx={{ display: 'flex', gap: 1 }}>
-              <FormControl variant='outlined' sx={{ minWidth: 180 }}>
-                <Select
-                  size='small'
-                  labelId='theme-select-label'
-                  id='theme-select'
-                  value={showCustomTheme ? 'custom' : 'material'}
-                  onChange={handleChange}
-                  label='Design Language'
-                >
-                  <MenuItem value='custom'>Custom Theme</MenuItem>
-                  <MenuItem value='material'>Material Design 2</MenuItem>
-                </Select>
-              </FormControl>
+              <FormControl
+                variant='outlined'
+                sx={{ minWidth: 180 }}
+              ></FormControl>
               <ToggleColorMode
                 data-screenshot='toggle-mode'
                 mode={mode}

@@ -47,7 +47,15 @@ export default function MainGrid() {
         Details
       </Typography>
       {fileInfo ? (
-        <PreviewPane fileInfo={fileInfo} />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
+        >
+          <PreviewPane fileInfo={fileInfo} />
+        </Box>
       ) : (
         <Grid container spacing={2} columns={12} justifyContent={'center'}>
           {/* <FileListView rows={rows} /> */}

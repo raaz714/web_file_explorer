@@ -3,19 +3,73 @@ package routehandlers
 import (
 	"net/http"
 	"os"
+	"path/filepath"
+	"sort"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
 	"web_file_explorer/config"
 	"web_file_explorer/traverse"
+	"web_file_explorer/utils"
 )
 
-func dirHandler(c *gin.Context, path *string) {
-	results, err := traverse.DirFileInfo(*path)
-	if err != nil {
-		c.String(404, err.Error())
+// func dirHandler(c *gin.Context, path *string) {
+// 	results, err := traverse.DirFileInfo(*path)
+// 	if err != nil {
+// 		c.String(404, err.Error())
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, results)
+// }
+
+func DirHandler(c *gin.Context, path *string) {
+
+	if c.Request.Method == http.MethodHead {
+		c.Header("isdir", "true")
+		c.Status(http.StatusOK)
 		return
 	}
+
+	var results []*traverse.FileInfo
+	userConfig := config.GetConfig()
+
+	dirList, err := os.ReadDir(*path)
+	if err != nil {
+		c.AbortWithError(http.StatusNotFound, err)
+	}
+
+	for _, d := range dirList {
+		info, err := d.Info()
+		if err != nil {
+			continue
+		}
+
+		fullPath := filepath.Join(*path, d.Name())
+
+		if !userConfig.Hidden {
+			isHidden, err := utils.IsHiddenFile(fullPath)
+			if err != nil || isHidden {
+				continue
+			}
+		}
+		results = append(results,
+			traverse.FileInfoFromInterface(
+				info, fullPath, len(userConfig.Root)))
+	}
+
+	// sort directory at the beginning, then files
+	// also sort with names (case insensitive)
+	sort.Slice(results, func(i, j int) bool {
+		if results[i].IsDir == results[j].IsDir {
+			return strings.ToLower(results[i].Name) < strings.ToLower(results[j].Name)
+		} else if results[i].IsDir {
+			return true
+		} else {
+			return false
+		}
+	})
+
 	c.JSON(http.StatusOK, results)
 }
 
@@ -32,7 +86,8 @@ func PathHandler() gin.HandlerFunc {
 		}
 
 		if fi.IsDir() {
-			dirHandler(c, &path)
+			// dirHandler(c, &path)
+			DirHandler(c, &path)
 		} else {
 			c.File(path)
 		}

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"embed"
 	"fmt"
+	"io/fs"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,6 +11,9 @@ import (
 	"web_file_explorer/config"
 	"web_file_explorer/routehandlers"
 )
+
+//go:embed dist
+var staticFS embed.FS
 
 func Options(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", c.Request.Header.Get("Origin"))
@@ -35,12 +40,20 @@ func main() {
 	router := gin.Default()
 	router.Use(Options)
 
+	authGroup := router.Group("/_auth")
+	{
+		authGroup.POST("/login", routehandlers.LoginHandler)
+	}
+
 	pathGroup := router.Group("/_api")
 	{
+		pathGroup.HEAD("/*relativePath", routehandlers.PathHandler())
 		pathGroup.GET("/*relativePath", routehandlers.PathHandler())
 	}
 
-	exeGroup := router.Group("/_execute")
+	router.GET("/_sub/*sub", routehandlers.SubHandler)
+
+	exeGroup := router.Group("/_execute", routehandlers.AuthMiddleware)
 	{
 		exeGroup.POST("/copy", routehandlers.CopyHandler())
 		exeGroup.POST("/cut", routehandlers.CutHandler())
@@ -50,8 +63,12 @@ func main() {
 		exeGroup.POST("/newfolder", routehandlers.NewFolderHandler())
 	}
 
-	router.POST("/upload", routehandlers.UploadHandler())
+	router.POST("/_upload", routehandlers.AuthMiddleware, routehandlers.UploadHandler())
 
-	router.GET("/search", routehandlers.SearchHandler())
+	router.GET("/_search", routehandlers.AuthMiddleware, routehandlers.SearchHandler())
+
+	reactAsset, _ := fs.Sub(staticFS, "dist")
+	router.NoRoute(gin.WrapH(http.FileServer(http.FS(reactAsset))))
+
 	router.Run(fmt.Sprintf(":%d", userConfig.Port))
 }

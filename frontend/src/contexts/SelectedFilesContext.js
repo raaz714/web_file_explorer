@@ -16,9 +16,8 @@ const SelectedFilesContextProvider = (props) => {
     setSelectedFiles([])
   }
 
-  const executePaste = () => {
-    const url = 'http://localhost:9876/_execute/' + (isCut ? 'cut' : 'copy')
-    console.log('raaz : ', url, isCut)
+  const executePaste = (callback = null) => {
+    const url = '/_execute/' + (isCut ? 'cut' : 'copy')
     const options = {
       method: 'POST',
       url: url,
@@ -31,9 +30,9 @@ const SelectedFilesContextProvider = (props) => {
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data)
         setPastable([])
         setIsCut(false)
+        callback && callback()
       })
       .catch(function (error) {
         console.error(error)
@@ -42,10 +41,10 @@ const SelectedFilesContextProvider = (props) => {
       })
   }
 
-  const executeRemove = () => {
+  const executeRemove = (callback = null) => {
     const options = {
       method: 'POST',
-      url: 'http://localhost:9876/_execute/remove',
+      url: '/_execute/remove',
       headers: { 'Content-Type': 'application/json' },
       data: { filepaths: selectedFiles },
     }
@@ -53,9 +52,8 @@ const SelectedFilesContextProvider = (props) => {
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data)
-
         setSelectedFiles([])
+        callback && callback()
       })
       .catch(function (error) {
         console.error(error)

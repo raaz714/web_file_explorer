@@ -6,8 +6,6 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Stack from '@mui/material/Stack'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded'
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 import NoteAddIcon from '@mui/icons-material/NoteAdd'
 import GitHubIcon from '@mui/icons-material/GitHub'
@@ -23,11 +21,11 @@ import {
 import axios from 'axios'
 import { useLocation } from 'react-router-dom'
 
-const secondaryListItems = [
-  { text: 'Settings', icon: <SettingsRoundedIcon /> },
-  { text: 'About', icon: <InfoRoundedIcon /> },
-  { text: 'Github', icon: <GitHubIcon /> },
-]
+// const secondaryListItems = [
+//   { text: 'Settings', icon: <SettingsRoundedIcon /> },
+//   { text: 'About', icon: <InfoRoundedIcon /> },
+//   { text: 'Github', icon: <GitHubIcon /> },
+// ]
 
 const FileNameDialog = ({ open, handleSubmit, handleClose }) => {
   return (
@@ -74,9 +72,7 @@ const MenuContent = () => {
   const { pathname } = useLocation()
 
   const handleSubmit = (value) => {
-    const url =
-      'http://localhost:9876/_execute/' +
-      (createType === 'file' ? 'newfile' : 'newfolder')
+    const url = '/_execute/' + (createType === 'file' ? 'newfile' : 'newfolder')
     let data = {}
 
     switch (createType) {
@@ -124,7 +120,10 @@ const MenuContent = () => {
         justifyContent: 'space-between',
       }}
     >
-      <List>
+      <List
+        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+        component='nav'
+      >
         <ListItem disablePadding sx={{ display: 'block' }}>
           <ListItemButton selected>
             <ListItemIcon>
@@ -152,14 +151,18 @@ const MenuContent = () => {
       </List>
 
       <List>
-        {secondaryListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem disablePadding sx={{ display: 'block' }}>
+          <ListItemButton
+            component='a'
+            href='https://github.com/raaz714/web_file_explorer'
+            target='_blank'
+          >
+            <ListItemIcon>
+              <GitHubIcon />
+            </ListItemIcon>
+            <ListItemText primary={'Github'} />
+          </ListItemButton>
+        </ListItem>
       </List>
       <FileNameDialog
         open={open}

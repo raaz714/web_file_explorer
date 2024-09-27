@@ -19,20 +19,19 @@ export const FileGridView = ({ rows }) => {
   const navigate = useNavigate()
 
   const handleChange = (event, row) => {
-    let tempSelectedFiles = selectedFiles
+    event.stopPropagation()
 
-    const found = tempSelectedFiles.find((element) => element === row.Path)
+    const found = selectedFiles.find((element) => element === row.Path)
     if (!found) {
       if (event.target.checked) {
-        tempSelectedFiles.push(row.Path)
+        setSelectedFiles([...selectedFiles, row.Path])
       }
     } else {
       if (!event.target.checked) {
-        tempSelectedFiles = tempSelectedFiles.filter((t) => t !== row.Path)
+        let tempSelectedFiles = selectedFiles.filter((t) => t !== row.Path)
+        setSelectedFiles(tempSelectedFiles)
       }
     }
-
-    setSelectedFiles(tempSelectedFiles)
   }
 
   const handleClick = (row) => {
@@ -74,7 +73,7 @@ export const FileGridView = ({ rows }) => {
                   >
                     {getIcon(row.Name, row.IsDir, 40)}
                     <Checkbox
-                      onChange={(event) => handleChange(event, row)}
+                      onClick={(event) => handleChange(event, row)}
                       inputProps={{ 'aria-label': 'controlled' }}
                     />
                   </Box>
@@ -84,9 +83,19 @@ export const FileGridView = ({ rows }) => {
                       flexDirection: 'column',
                       justifyContent: 'space-around',
                       alignItems: 'flex-start',
+                      width: '100%',
                     }}
                   >
-                    <Typography variant='h6' sx={{}}>
+                    <Typography
+                      variant='h6'
+                      align='left'
+                      sx={{
+                        textWrap: 'nowrap',
+                        overflow: 'hidden',
+                        width: '90%',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
                       {row.Name}
                     </Typography>
                     <div>{formattedDateTime(row.LastModified)}</div>

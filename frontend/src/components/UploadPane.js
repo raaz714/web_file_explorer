@@ -34,7 +34,7 @@ const InputFileUpload = () => {
     })
 
     axios
-      .post(`http://localhost:9876/upload?destination=${pathname}`, form, {
+      .post(`/_upload?destination=${pathname}`, form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

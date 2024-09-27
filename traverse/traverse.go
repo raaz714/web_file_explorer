@@ -90,7 +90,7 @@ func (tn TreeNode) All() iter.Seq[any] {
 type PathNodeMap map[string]*TreeNode
 
 // Helper function to create a local FileInfo struct from os.FileInfo interface.
-func fileInfoFromInterface(v os.FileInfo, path string, prefixLen int) *FileInfo {
+func FileInfoFromInterface(v os.FileInfo, path string, prefixLen int) *FileInfo {
 	// mType, _ := mimetype.DetectFile(path)
 	return &FileInfo{
 		utils.Hash(path),
@@ -138,7 +138,7 @@ func NewTree(root string) (*AllPaths, *TreeNode, *PathNodeMap, error) {
 			}
 		}
 
-		fileInfoPopulated := fileInfoFromInterface(info, path, len(userConfig.Root))
+		fileInfoPopulated := FileInfoFromInterface(info, path, len(userConfig.Root))
 
 		PathList = append(PathList, fileInfoPopulated)
 		PNPData[path] = &TreeNode{

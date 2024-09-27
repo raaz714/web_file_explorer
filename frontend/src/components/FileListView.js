@@ -4,9 +4,46 @@ import {
   GridToolbarContainer,
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid'
-import { headCells as columns } from '../internals/data/gridData'
 import { useNavigate } from 'react-router-dom'
 import { SelectedFilesContext } from '../contexts/SelectedFilesContext'
+import { Stack, Typography } from '@mui/material'
+import { getIcon } from '../utils/iconUtils'
+import { formattedDateTime, humanFileSize } from '../utils/utils'
+
+const columns = [
+  {
+    field: 'Name',
+    flex: 1,
+    minWidth: 200,
+    headerName: 'Name',
+    renderCell: (params) => {
+      return (
+        <Stack
+          sx={{ display: 'flex', alignItems: 'center', height: '100%' }}
+          direction='row'
+          spacing={2}
+        >
+          {getIcon(params.row.Name, params.row.IsDir)}
+          <Typography>{params.value}</Typography>
+        </Stack>
+      )
+    },
+  },
+  {
+    field: 'Size',
+    flex: 1,
+    minWidth: 100,
+    headerName: 'Size',
+    renderCell: (params) => humanFileSize(params.value),
+  },
+  {
+    field: 'LastModified',
+    flex: 1,
+    minWidth: 100,
+    headerName: 'Last Modified',
+    renderCell: (params) => formattedDateTime(params.value),
+  },
+]
 
 function CustomToolbar() {
   return (

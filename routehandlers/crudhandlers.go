@@ -1,7 +1,6 @@
 package routehandlers
 
 import (
-	"fmt"
 	"net/http"
 	"path/filepath"
 
@@ -31,19 +30,16 @@ type RenameObject struct {
 
 func CopyHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
-		fmt.Println("Inside CopyHandler")
 		userConfig := config.GetConfig()
 		var data PasteObject
 		err := c.BindJSON(&data)
 		if err != nil {
-			fmt.Println(err)
 			c.AbortWithError(400, err)
 			return
 		}
 		for _, d := range data.Sources {
 			err = utils.ExecuteCopy(userConfig.Root+"/"+d, userConfig.Root+"/"+data.Destination)
 			if err != nil {
-				fmt.Println(err)
 				c.AbortWithError(http.StatusBadRequest, err)
 				return
 			}

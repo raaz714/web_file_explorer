@@ -3,7 +3,7 @@ import { createContext, useState } from 'react'
 export const ViewContext = createContext()
 
 const ViewContextProvider = (props) => {
-  const [view, setView] = useState('grid')
+  const [view, setView] = useState('list')
 
   const toggleView = () => {
     if (view === 'list') {

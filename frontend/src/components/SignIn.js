@@ -1,18 +1,6 @@
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Checkbox from '@mui/material/Checkbox'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormLabel from '@mui/material/FormLabel'
-import FormControl from '@mui/material/FormControl'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import Stack from '@mui/material/Stack'
-import Card from '@mui/material/Card'
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import useSignIn from 'react-auth-kit/hooks/useSignIn'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import getDashboardTheme from '../theme/getDashboardTheme'
 import { useEffect, useState } from 'react'
 
 export default function SignIn() {
@@ -33,7 +21,6 @@ export default function SignIn() {
     }
   }, [])
 
-  const dashboardTheme = createTheme(getDashboardTheme(mode))
   const signIn = useSignIn()
   const navigate = useNavigate()
 
@@ -72,88 +59,70 @@ export default function SignIn() {
       .catch(function (error) {
         console.error(error)
       })
-
-    // loginHandler(data.get('username'), data.get('password'))
   }
 
   return (
-    <ThemeProvider theme={dashboardTheme}>
-      <CssBaseline enableColorScheme />
-      <Stack
-        direction='column'
-        justifyContent='space-between'
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Card
-          variant='outlined'
-          sx={{ width: '100%', maxWidth: '450px', mt: '10vh', p: 5 }}
+    <div
+      data-theme={mode}
+      className='flex flex-col h-screen justify-center items-center'
+    >
+      <div className='card h-96 w-full max-w-[450px] mt-10 p-5 border border-white/15'>
+        <div className='w-full text-4xl font-semibold mb-10'>Sign in</div>
+        <form
+          className='flex flex-col h-full justify-between w-full gap-2'
+          onSubmit={handleSubmit}
+          noValidate
         >
-          <Typography
-            component='h1'
-            variant='h4'
-            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+          <label
+            htmlFor='usernmae'
+            name='username'
+            className='input input-bordered flex items-center gap-2'
           >
-            Sign in
-          </Typography>
-          <Box
-            component='form'
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '100%',
-              gap: 2,
-            }}
-          >
-            <FormControl>
-              <FormLabel htmlFor='usernmae'>Username</FormLabel>
-              <TextField
-                id='username'
-                type='text'
-                name='username'
-                placeholder='username'
-                autoComplete='username'
-                autoFocus
-                required
-                fullWidth
-                variant='outlined'
-                color={'primary'}
-                sx={{ ariaLabel: 'username' }}
-              />
-            </FormControl>
-            <FormControl>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <FormLabel htmlFor='password'>Password</FormLabel>
-              </Box>
-              <TextField
-                name='password'
-                placeholder='••••••'
-                type='password'
-                id='password'
-                autoComplete='current-password'
-                autoFocus
-                required
-                fullWidth
-                variant='outlined'
-                color={'primary'}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value='remember' color='primary' />}
-              label='Remember me'
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 16 16'
+              fill='currentColor'
+              className='h-4 w-4 opacity-70'
+            >
+              <path d='M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z' />
+            </svg>
+            <input
+              id='username'
+              name='username'
+              type='text'
+              className='grow'
+              placeholder='Username'
             />
-            <Button type='submit' fullWidth variant='contained'>
-              Sign in
-            </Button>
-          </Box>
-        </Card>
-      </Stack>
-    </ThemeProvider>
+          </label>
+          <label
+            htmlFor='password'
+            className='input input-bordered flex items-center gap-2'
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 16 16'
+              fill='currentColor'
+              className='h-4 w-4 opacity-70'
+            >
+              <path
+                fillRule='evenodd'
+                d='M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z'
+                clipRule='evenodd'
+              />
+            </svg>
+            <input
+              id='password'
+              name='password'
+              type='password'
+              className='grow'
+              placeholder='Password'
+            />
+          </label>
+          <button type='submit' className='btn w-full btn-primary'>
+            Sign in
+          </button>
+        </form>
+      </div>
+    </div>
   )
 }

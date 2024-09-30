@@ -18,7 +18,7 @@ const PathContextProvider = (props) => {
     axios
       .request(content_options)
       .then(function (response) {
-        console.log(response.data)
+        // console.log(response.data)
         setFileInfo(null)
         setRows(response.data)
       })
@@ -76,7 +76,7 @@ const PathContextProvider = (props) => {
         })
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
   }
 

@@ -1,34 +1,9 @@
-import * as React from 'react'
-import { styled } from '@mui/material/styles'
-import Divider, { dividerClasses } from '@mui/material/Divider'
-import Menu from '@mui/material/Menu'
-import MuiMenuItem from '@mui/material/MenuItem'
-import { paperClasses } from '@mui/material/Paper'
-import { listClasses } from '@mui/material/List'
-import ListItemText from '@mui/material/ListItemText'
-import ListItemIcon, { listItemIconClasses } from '@mui/material/ListItemIcon'
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
-import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded'
 import useSignOut from 'react-auth-kit/hooks/useSignOut'
-import MenuButton from './MenuButton'
 import { useNavigate } from 'react-router-dom'
 
-const MenuItem = styled(MuiMenuItem)({
-  margin: '2px 0',
-})
-
 export default function OptionsMenu() {
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const open = Boolean(anchorEl)
   const signOut = useSignOut()
   const navigate = useNavigate()
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
 
   const handleLogout = () => {
     signOut()
@@ -36,55 +11,51 @@ export default function OptionsMenu() {
   }
 
   return (
-    <React.Fragment>
-      <MenuButton
-        aria-label='Open menu'
-        onClick={handleClick}
-        sx={{ borderColor: 'transparent' }}
-      >
-        <MoreVertRoundedIcon />
-      </MenuButton>
-      <Menu
-        anchorEl={anchorEl}
-        id='menu'
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        sx={{
-          [`& .${listClasses.root}`]: {
-            padding: '4px',
-          },
-          [`& .${paperClasses.root}`]: {
-            padding: 0,
-          },
-          [`& .${dividerClasses.root}`]: {
-            margin: '4px -4px',
-          },
-        }}
-      >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>Add another account</MenuItem>
-        <MenuItem onClick={handleClose}>Settings</MenuItem>
-        <Divider />
-        <MenuItem
-          onClick={handleLogout}
-          sx={{
-            [`& .${listItemIconClasses.root}`]: {
-              ml: 'auto',
-              minWidth: 0,
-            },
-          }}
+    <>
+      <div className='dropdown dropdown-top dropdown-left'>
+        <div tabIndex={0} role='button' className='btn m-1'>
+          <div aria-label='Open menu' sx={{ borderColor: 'transparent' }}>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              fill='currentColor'
+              className='size-6'
+            >
+              <path
+                fillRule='evenodd'
+                d='M10.5 6a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm0 6a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm0 6a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z'
+                clipRule='evenodd'
+              />
+            </svg>
+          </div>
+        </div>
+        <ul
+          tabIndex={0}
+          className='dropdown-content text-xs menu bg-base-100 rounded-box z-[1] w-36 shadow'
         >
-          <ListItemText>Logout</ListItemText>
-          <ListItemIcon>
-            <LogoutRoundedIcon fontSize='small' />
-          </ListItemIcon>
-        </MenuItem>
-      </Menu>
-    </React.Fragment>
+          <li onClick={() => {}}>Profile</li>
+          <li onClick={() => {}}>My account</li>
+          <div className='divider' />
+          <li onClick={() => {}}>Add another account</li>
+          <li onClick={() => {}}>Settings</li>
+          <div className='divider' />
+          <li className='cursor-pointer' onClick={handleLogout}>
+            Logout
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              fill='currentColor'
+              className='size-6'
+            >
+              <path
+                fillRule='evenodd'
+                d='M7.5 3.75A1.5 1.5 0 0 0 6 5.25v13.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5V15a.75.75 0 0 1 1.5 0v3.75a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3V5.25a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3V9A.75.75 0 0 1 15 9V5.25a1.5 1.5 0 0 0-1.5-1.5h-6Zm10.72 4.72a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l1.72-1.72H9a.75.75 0 0 1 0-1.5h10.94l-1.72-1.72a.75.75 0 0 1 0-1.06Z'
+                clipRule='evenodd'
+              />
+            </svg>
+          </li>
+        </ul>
+      </div>
+    </>
   )
 }

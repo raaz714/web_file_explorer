@@ -45,13 +45,15 @@ func main() {
 		authGroup.POST("/login", routehandlers.LoginHandler)
 	}
 
-	pathGroup := router.Group("/_api")
+	pathGroup := router.Group("/_api", routehandlers.AuthMiddleware)
 	{
 		pathGroup.HEAD("/*relativePath", routehandlers.PathHandler())
 		pathGroup.GET("/*relativePath", routehandlers.PathHandler())
 	}
 
-	router.GET("/_sub/*sub", routehandlers.SubHandler)
+	router.GET("/_download/*relativePath", routehandlers.AuthMiddleware, routehandlers.DownloadHandler())
+	router.HEAD("/_download/*relativePath", routehandlers.AuthMiddleware, routehandlers.DownloadHandler())
+	router.GET("/_sub/*sub", routehandlers.AuthMiddleware, routehandlers.SubHandler)
 
 	exeGroup := router.Group("/_execute", routehandlers.AuthMiddleware)
 	{

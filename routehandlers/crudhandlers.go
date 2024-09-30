@@ -102,8 +102,8 @@ func RenameHandler() gin.HandlerFunc {
 			return
 		}
 		utils.ExecuteRename(
-			userConfig.Root+"/"+renameObject.OldName,
-			userConfig.Root+"/"+renameObject.NewName,
+			filepath.Join(userConfig.Root, renameObject.OldName),
+			filepath.Join(userConfig.Root, renameObject.NewName),
 		)
 		c.Status(http.StatusOK)
 	}

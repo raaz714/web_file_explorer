@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react'
-import CssBaseline from '@mui/material/CssBaseline'
-import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
 import Header from './Header'
 import MainGrid from './MainGrid'
-import SideMenu from './SideMenu'
 import GlobalFrame from './GlobalFrame'
 import PathContextProvider from '../contexts/PathContext'
 import SelectedFilesContextProvider from '../contexts/SelectedFilesContext'
 import InputFileUpload from './UploadPane'
 import ViewContextProvider from '../contexts/ViewContext'
-import { alpha } from '@mui/material'
 
 const AppView = () => {
   const [mode, setMode] = useState('light')
@@ -51,38 +46,11 @@ const AppView = () => {
 
 const AppViewHelper = () => {
   return (
-    <>
-      <CssBaseline enableColorScheme />
-      <Box sx={{ display: 'flex' }}>
-        <SideMenu />
-        {/* <AppNavbar /> */}
-        {/* Main content */}
-        <Box
-          component='main'
-          sx={(theme) => ({
-            flexGrow: 1,
-            backgroundColor: alpha(theme.palette.background.default, 1),
-            overflow: 'auto',
-          })}
-        >
-          <Stack
-            spacing={2}
-            sx={{
-              alignItems: 'center',
-              mx: 'auto',
-              pb: 10,
-              mt: { xs: 8, md: 2 },
-              maxWidth: { xs: '90%', xl: '1700px' },
-              minHeight: { xs: '400px', md: '1200px' },
-            }}
-          >
-            <InputFileUpload />
-            <Header />
-            <MainGrid />
-          </Stack>
-        </Box>
-      </Box>
-    </>
+    <div className='flex flex-col w-full items-center mx-auto pb-10 max-w-[90%] xl:max-w-[1700px] min-h-[400px] md:min-h-[1200px]'>
+      <InputFileUpload />
+      <Header />
+      <MainGrid />
+    </div>
   )
 }
 

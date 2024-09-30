@@ -77,7 +77,7 @@ func PathHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
 		relativePath := c.Param("relativePath")
-		path := userConfig.Root + "/" + relativePath
+		path := filepath.Join(userConfig.Root + relativePath)
 
 		fi, err := os.Stat(path)
 		if err != nil {

@@ -127,7 +127,7 @@ func NewTree(root string) (*AllPaths, *TreeNode, *PathNodeMap, error) {
 			return nil
 		}
 
-		if userConfig.Hidden == false {
+		if !userConfig.Hidden {
 			isHidden, err := utils.IsHiddenFile(path)
 			if err != nil || isHidden {
 				if info.IsDir() {

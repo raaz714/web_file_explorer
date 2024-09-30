@@ -1,82 +1,97 @@
 import * as React from 'react'
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles'
-import FormControl from '@mui/material/FormControl'
-import Box from '@mui/material/Box'
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import ToggleColorMode from './ToggleColorMode'
-import getDashboardTheme from '../theme/getDashboardTheme'
-import { Typography } from '@mui/material'
-
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  flexShrink: 0,
-  borderBottom: '1px solid',
-  borderColor: theme.palette.divider,
-  backgroundColor: theme.palette.background.paper,
-  boxShadow: 'none',
-  backgroundImage: 'none',
-  zIndex: theme.zIndex.drawer + 1,
-  flex: '0 0 auto',
-}))
+import SideMenu from './SideMenu'
 
 const GlobalFrame = ({ mode, toggleColorMode, children }) => {
-  const dashboardTheme = createTheme(getDashboardTheme(mode))
+  // const dashboardTheme = createTheme(getDashboardTheme(mode))
 
   return (
-    <ThemeProvider theme={dashboardTheme}>
-      <Box sx={{ height: '100dvh', display: 'flex', flexDirection: 'column' }}>
-        <StyledAppBar>
-          <Toolbar
-            variant='dense'
-            disableGutters
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              width: '100%',
-              p: '8px 12px',
-            }}
+    <div className='drawer lg:drawer-open bg-base-300' data-theme={mode}>
+      <input id='left-nav' type='checkbox' className='drawer-toggle' />
+      <div className='drawer-content flex flex-col items-center justify-center'>
+        {/* Page content here */}
+        <div
+          className='w-full h-screen flex flex-col'
+          //  sx={{ height: '100dvh', display: 'flex', flexDirection: 'column' }}
+        >
+          <NavBar mode={mode} toggleColorMode={toggleColorMode} />
+          <div className=' flex flex-1 overflow-auto'>{children}</div>
+        </div>
+        <label
+          htmlFor='left-nav'
+          className='btn btn-primary fixed top-1 left-1 drawer-button lg:hidden'
+        >
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            strokeWidth={1.5}
+            stroke='currentColor'
+            className='size-6'
           >
-            {/* <Button
-              variant='text'
-              size='small'
-              aria-label='Back to templates'
-              startIcon={<ArrowBackRoundedIcon />}
-              component='a'
-              href='/material-ui/getting-started/templates/'
-              sx={{ display: { xs: 'none', sm: 'flex' } }}
-            >
-              Back to templates
-            </Button>
-            <IconButton
-              size='small'
-              aria-label='Back to templates'
-              component='a'
-              href='/material-ui/getting-started/templates/'
-              sx={{ display: { xs: 'auto', sm: 'none' } }}
-            >
-              <ArrowBackRoundedIcon />
-            </IconButton> */}
-            <Typography variant='h5'>File Browser</Typography>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <FormControl
-                variant='outlined'
-                sx={{ minWidth: 180 }}
-              ></FormControl>
-              <ToggleColorMode
-                data-screenshot='toggle-mode'
-                mode={mode}
-                toggleColorMode={toggleColorMode}
-              />
-            </Box>
-          </Toolbar>
-        </StyledAppBar>
-        <Box sx={{ flex: '1 1', overflow: 'auto' }}>{children}</Box>
-      </Box>
-    </ThemeProvider>
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5'
+            />
+          </svg>
+        </label>
+      </div>
+      <div className='drawer-side'>
+        <label
+          htmlFor='left-nav'
+          aria-label='close sidebar'
+          className='drawer-overlay'
+        ></label>
+        {/* Sidebar content here */}
+        <SideMenu />
+      </div>
+    </div>
+  )
+}
+
+const NavBar = ({ mode, toggleColorMode }) => {
+  return (
+    <div className='navbar bg-base-200'>
+      <div className='flex-1'>
+        <div className='text-xl font-semibold ml-4'>File Browser</div>
+      </div>
+      <label className='flex cursor-pointer gap-2'>
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          width='20'
+          height='20'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+        >
+          <circle cx='12' cy='12' r='5' />
+          <path d='M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4' />
+        </svg>
+        <input
+          type='checkbox'
+          value='dark'
+          checked={mode === 'dark'}
+          onChange={toggleColorMode}
+          className='toggle theme-controller'
+        />
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          width='20'
+          height='20'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+        >
+          <path d='M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'></path>
+        </svg>
+      </label>
+    </div>
   )
 }
 

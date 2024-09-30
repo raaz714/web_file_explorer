@@ -1,6 +1,9 @@
 
-all: frontend
-	go build -o wfe .
+all: frontend wfe
+
+wfe:
+	CGO_ENABLED=0 go build -ldflags "-s -w" -o wfe .
+
 
 prebuild:
 	go mod download

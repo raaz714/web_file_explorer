@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Header from './Header'
 import MainGrid from './MainGrid'
 import GlobalFrame from './GlobalFrame'
-import PathContextProvider from '../contexts/PathContext'
+import PathContextProvider, { PathContext } from '../contexts/PathContext'
 import SelectedFilesContextProvider from '../contexts/SelectedFilesContext'
 import InputFileUpload from './UploadPane'
 import ViewContextProvider from '../contexts/ViewContext'
+import PreviewPane from './PreviewPane'
 
 const AppView = () => {
   const [mode, setMode] = useState('light')
@@ -32,24 +33,33 @@ const AppView = () => {
   }
 
   return (
-    <GlobalFrame mode={mode} toggleColorMode={toggleColorMode}>
-      <PathContextProvider>
-        <SelectedFilesContextProvider>
-          <ViewContextProvider>
+    <PathContextProvider>
+      <SelectedFilesContextProvider>
+        <ViewContextProvider>
+          <GlobalFrame mode={mode} toggleColorMode={toggleColorMode}>
             <AppViewHelper />
-          </ViewContextProvider>
-        </SelectedFilesContextProvider>
-      </PathContextProvider>
-    </GlobalFrame>
+          </GlobalFrame>
+        </ViewContextProvider>
+      </SelectedFilesContextProvider>
+    </PathContextProvider>
   )
 }
 
 const AppViewHelper = () => {
+  const { rows, fileInfo } = useContext(PathContext)
   return (
-    <div className='flex flex-col w-full items-center mx-auto pb-10 max-w-[90%] xl:max-w-[1700px] min-h-[400px] md:min-h-[1200px]'>
-      <InputFileUpload />
-      <Header />
-      <MainGrid />
+    <div className='flex flex-col w-full items-center justify-center mx-auto pb-10 max-w-[90%] xl:max-w-[1700px] min-h-[400px] md:min-h-[1200px]'>
+      {fileInfo ? (
+        <div className='flex flex-col justify-center'>
+          <PreviewPane fileInfo={fileInfo} />
+        </div>
+      ) : (
+        <>
+          <InputFileUpload />
+          <Header />
+          <MainGrid rows={rows} />
+        </>
+      )}
     </div>
   )
 }

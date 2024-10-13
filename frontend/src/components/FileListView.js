@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { formattedDateTime, humanFileSize } from '../utils/utils'
 import { SelectedFilesContext } from '../contexts/SelectedFilesContext'
 import { getIcon } from '../utils/iconUtils'
+import axios from 'axios'
+import { PathContext } from '../contexts/PathContext'
 
 const FileListView = ({ rows }) => {
   const [selectedRows, setSelectedRows] = useState([])
@@ -11,6 +13,7 @@ const FileListView = ({ rows }) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { setSelectedFiles } = useContext(SelectedFilesContext)
+  const { fetchRowsFromLocation } = useContext(PathContext)
 
   const sortByColumn = (column) => {
     if (sortingColumn?.includes(column)) {
@@ -59,6 +62,35 @@ const FileListView = ({ rows }) => {
 
   const handleClick = (path) => {
     navigate(path)
+  }
+
+  const handleDownload = (event, data) => {
+    event.stopPropagation()
+    window.open('/_download/' + data.Path + '?basename=' + pathname, '_blank')
+  }
+
+  const handleRename = (event, data) => {
+    event.stopPropagation()
+    const renamedFile = prompt('Enter new file/folder name', data.Name)
+    if (renamedFile !== '' && renamedFile !== data.Name) {
+      console.log('raname ', data.Path, ' to ', renamedFile)
+
+      const options = {
+        method: 'POST',
+        url: '/_execute/rename',
+        headers: { 'Content-Type': 'application/json' },
+        data: { oldname: data.Path, newname: pathname + '/' + renamedFile },
+      }
+
+      axios
+        .request(options)
+        .then(function (response) {
+          fetchRowsFromLocation()
+        })
+        .catch(function (error) {
+          console.error(error)
+        })
+    }
   }
 
   return (
@@ -215,47 +247,49 @@ const FileListView = ({ rows }) => {
                 {formattedDateTime(data?.LastModified)}
               </td>
               <td>
-                <button
-                  className='btn btn-sm btn-info'
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    window.open(
-                      '/_download/' + data.Path + '?basename=' + pathname,
-                      '_blank'
-                    )
-                  }}
-                >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='size-4'
+                <div className='tooltip' data-tip='Download as zip'>
+                  <button
+                    className='btn btn-sm btn-neutral mr-2'
+                    onClick={(event) => handleDownload(event, data)}
                   >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3'
-                    />
-                  </svg>
-                </button>
-                <button className='btn btn-sm btn-secondary'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='size-4'
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='size-4'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3'
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className='tooltip' data-tip='Rename'>
+                  <button
+                    className='btn btn-sm btn-neutral'
+                    onClick={(event) => handleRename(event, data)}
                   >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125'
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='size-4'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125'
+                      />
+                    </svg>
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

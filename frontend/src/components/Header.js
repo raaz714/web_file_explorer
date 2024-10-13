@@ -14,7 +14,7 @@ const FileActionPane = ({
   const { fetchRowsFromLocation } = useContext(PathContext)
   return pastable.length > 0 ? (
     <button
-      className='btn mx-1'
+      className='btn btn-sm mx-1 my-2 md:my-0'
       aria-label='paste'
       onClick={() => executePaste(fetchRowsFromLocation)}
     >
@@ -22,7 +22,7 @@ const FileActionPane = ({
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 24 24'
         fill='currentColor'
-        className='size-6'
+        className='size-4'
       >
         <path
           fillRule='evenodd'
@@ -37,9 +37,9 @@ const FileActionPane = ({
       </svg>
     </button>
   ) : (
-    <div>
+    <div className='my-2 md:my-0'>
       <button
-        className='btn mx-1'
+        className='btn btn-sm mx-1'
         aria-label='copy'
         onClick={() => stageToCopyOrCut(false)}
       >
@@ -49,7 +49,7 @@ const FileActionPane = ({
           viewBox='0 0 24 24'
           strokeWidth={1.5}
           stroke='currentColor'
-          className='size-6'
+          className='size-4'
         >
           <path
             strokeLinecap='round'
@@ -59,7 +59,7 @@ const FileActionPane = ({
         </svg>
       </button>
       <button
-        className='btn mx-1'
+        className='btn btn-sm mx-1'
         aria-label='cut'
         onClick={() => stageToCopyOrCut(true)}
       >
@@ -69,7 +69,7 @@ const FileActionPane = ({
           viewBox='0 0 24 24'
           strokeWidth={1.5}
           stroke='currentColor'
-          className='size-6'
+          className='size-4'
         >
           <path
             strokeLinecap='round'
@@ -79,7 +79,7 @@ const FileActionPane = ({
         </svg>
       </button>
       <button
-        className='btn mx-1'
+        className='btn btn-sm mx-1'
         aria-label='delete'
         onClick={() => executeRemove(fetchRowsFromLocation)}
       >
@@ -89,7 +89,7 @@ const FileActionPane = ({
           viewBox='0 0 24 24'
           strokeWidth={1.5}
           stroke='currentColor'
-          className='size-6'
+          className='size-4'
         >
           <path
             strokeLinecap='round'
@@ -114,9 +114,9 @@ export default function Header() {
   const { view, toggleView } = useContext(ViewContext)
 
   return (
-    <div className='flex flex-row items-start md:items-center justify-between w-full md:max-w-[1700px] space-y-4'>
+    <div className='flex flex-col md:flex-row items-start md:items-center justify-between w-full md:max-w-[1700px] space-y-4'>
       <NavbarBreadcrumbs />
-      <div className='flex flex-row gap-1'>
+      <div className='w-full md:w-auto flex flex-col md:flex-row md:gap-1'>
         {(selectedFiles.length > 0 || pastable.length > 0) && (
           <FileActionPane
             pastable={pastable}
@@ -126,7 +126,11 @@ export default function Header() {
           />
         )}
         <Search />
-        <div className='my-auto' onClick={toggleView} aria-label='Change View'>
+        <div
+          className='my-auto hidden md:block'
+          onClick={toggleView}
+          aria-label='Change View'
+        >
           {view === 'grid' ? (
             <svg
               xmlns='http://www.w3.org/2000/svg'

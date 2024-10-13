@@ -14,11 +14,11 @@ const GlobalFrame = ({ mode, toggleColorMode, children }) => {
           //  sx={{ height: '100dvh', display: 'flex', flexDirection: 'column' }}
         >
           <NavBar mode={mode} toggleColorMode={toggleColorMode} />
-          <div className=' flex flex-1 overflow-auto'>{children}</div>
+          <div className='flex'>{children}</div>
         </div>
         <label
           htmlFor='left-nav'
-          className='btn btn-primary fixed top-1 left-1 drawer-button lg:hidden'
+          className='btn btn-ghost fixed top-1 left-1 drawer-button lg:hidden'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -52,8 +52,10 @@ const GlobalFrame = ({ mode, toggleColorMode, children }) => {
 const NavBar = ({ mode, toggleColorMode }) => {
   return (
     <div className='navbar bg-base-200'>
-      <div className='flex-1'>
-        <div className='text-xl font-semibold ml-4'>File Browser</div>
+      <div className='w-full'>
+        <div className='text-xl w-full text-center md:w-fit font-semibold ml-4'>
+          File Browser
+        </div>
       </div>
       <label className='flex cursor-pointer gap-2'>
         <svg

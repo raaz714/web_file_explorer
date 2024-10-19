@@ -3,16 +3,16 @@ package main
 import (
 	"embed"
 	"fmt"
-	"io/fs"
 	"net/http"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 
 	"web_file_explorer/config"
 	"web_file_explorer/routehandlers"
 )
 
-//go:embed dist
+//go:embed all:dist
 var staticFS embed.FS
 
 func Options(c *gin.Context) {
@@ -40,6 +40,8 @@ func main() {
 	router := gin.Default()
 	router.Use(Options)
 
+	router.Use(static.Serve("/", static.EmbedFolder(staticFS, "dist")))
+
 	authGroup := router.Group("/_auth")
 	{
 		authGroup.POST("/login", routehandlers.LoginHandler)
@@ -51,8 +53,16 @@ func main() {
 		pathGroup.GET("/*relativePath", routehandlers.PathHandler())
 	}
 
-	router.GET("/_download/*relativePath", routehandlers.AuthMiddleware, routehandlers.DownloadHandler())
-	router.HEAD("/_download/*relativePath", routehandlers.AuthMiddleware, routehandlers.DownloadHandler())
+	router.GET(
+		"/_download/*relativePath",
+		routehandlers.AuthMiddleware,
+		routehandlers.DownloadHandler(),
+	)
+	router.HEAD(
+		"/_download/*relativePath",
+		routehandlers.AuthMiddleware,
+		routehandlers.DownloadHandler(),
+	)
 	router.GET("/_sub/*sub", routehandlers.AuthMiddleware, routehandlers.SubHandler)
 
 	exeGroup := router.Group("/_execute", routehandlers.AuthMiddleware)
@@ -69,8 +79,9 @@ func main() {
 
 	router.GET("/_search", routehandlers.AuthMiddleware, routehandlers.SearchHandler())
 
-	reactAsset, _ := fs.Sub(staticFS, "dist")
-	router.NoRoute(gin.WrapH(http.FileServer(http.FS(reactAsset))))
+	router.NoRoute(func(c *gin.Context) {
+		c.FileFromFS("dist/", http.FS(staticFS))
+	})
 
 	router.Run(fmt.Sprintf(":%d", userConfig.Port))
 }

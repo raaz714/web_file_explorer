@@ -13,12 +13,17 @@ import (
 )
 
 func InitializeConfig() {
-	rootPath := flag.String("path", ".", "root path to serve from, default '.'")
-	port := flag.Int("port", 9876, "port to start server, default 9876")
+	rootPath := flag.String("path", ".", "root path to serve from")
+	port := flag.Int("port", 9876, "port to start server")
 	hiddenFiles := flag.Bool(
 		"hidden",
 		false,
-		"should show hidden files and folders, default false",
+		"should show hidden files and folders",
+	)
+	cachedOnStart := flag.Bool(
+		"cached",
+		false,
+		"cache the file/folder snapshot at the time of app startup\nuseful for situations when the serving directory does not change after the app startup\nmuch faster as it bypasses disk i/o while serving directory tree",
 	)
 
 	flag.Parse()
@@ -38,11 +43,10 @@ func InitializeConfig() {
 	root, _ = filepath.Abs(root)
 	fmt.Printf("Config Initialized for path %s\n\n\n", root)
 
-	config.InitConfig(&root, port, hiddenFiles)
+	config.InitConfig(&root, port, hiddenFiles, cachedOnStart)
 }
 
 func IntializeTraverse(userConfig *config.UserConfig) {
-	fmt.Printf("\nIndexing %s\n", userConfig.Root)
 	start := time.Now()
 	traverse.NewTree(userConfig.Root)
 	elapsed := time.Since(start)

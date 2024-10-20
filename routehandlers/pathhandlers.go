@@ -14,17 +14,16 @@ import (
 	"web_file_explorer/utils"
 )
 
-// func dirHandler(c *gin.Context, path *string) {
-// 	results, err := traverse.DirFileInfo(*path)
-// 	if err != nil {
-// 		c.String(404, err.Error())
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, results)
-// }
+func dirHandler(c *gin.Context, path *string) {
+	results, err := traverse.DirFileInfo(*path)
+	if err != nil {
+		c.String(404, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, results)
+}
 
 func DirHandler(c *gin.Context, path *string) {
-
 	if c.Request.Method == http.MethodHead {
 		c.Header("isdir", "true")
 		c.Status(http.StatusOK)
@@ -58,7 +57,7 @@ func DirHandler(c *gin.Context, path *string) {
 				info, fullPath, len(userConfig.Root)))
 	}
 
-	// sort directory at the beginning, then files
+	// sort to keep directories at the beginning, then files
 	// also sort with names (case insensitive)
 	sort.Slice(results, func(i, j int) bool {
 		if results[i].IsDir == results[j].IsDir {
@@ -86,8 +85,11 @@ func PathHandler() gin.HandlerFunc {
 		}
 
 		if fi.IsDir() {
-			// dirHandler(c, &path)
-			DirHandler(c, &path)
+			if userConfig.Cached {
+				dirHandler(c, &path)
+			} else {
+				DirHandler(c, &path)
+			}
 		} else {
 			c.File(path)
 		}

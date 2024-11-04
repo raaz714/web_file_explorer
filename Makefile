@@ -1,3 +1,4 @@
+VERSION=0.1.0
 
 all: frontend wfe
 
@@ -13,6 +14,11 @@ frontend:
 
 dockerimage: frontend wfe
 	docker build . -t wfe
+
+release:
+	git tag -a $(VERSION)
+	git push origin $(VERSION)
+	goreleaser release --clean
 
 clean:
 	rm -rf react-build dist wfe

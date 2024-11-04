@@ -12,7 +12,7 @@ import (
 	"web_file_explorer/routehandlers"
 )
 
-//go:embed all:dist
+//go:embed all:react-build
 var staticFS embed.FS
 
 func Options(c *gin.Context) {
@@ -40,7 +40,7 @@ func main() {
 	router := gin.Default()
 	router.Use(Options)
 
-	router.Use(static.Serve("/", static.EmbedFolder(staticFS, "dist")))
+	router.Use(static.Serve("/", static.EmbedFolder(staticFS, "react-build")))
 
 	authGroup := router.Group("/_auth")
 	{
@@ -80,7 +80,7 @@ func main() {
 	router.GET("/_search", routehandlers.AuthMiddleware, routehandlers.SearchHandler())
 
 	router.NoRoute(func(c *gin.Context) {
-		c.FileFromFS("dist/", http.FS(staticFS))
+		c.FileFromFS("react-build/", http.FS(staticFS))
 	})
 
 	router.Run(fmt.Sprintf(":%d", userConfig.Port))

@@ -15,6 +15,6 @@ dockerimage: frontend wfe
 	docker build . -t wfe
 
 clean:
-	rm -rf dist wfe
+	rm -rf react-build dist wfe
 
 .PHONY: frontend prebuild clean

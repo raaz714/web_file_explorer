@@ -14,7 +14,13 @@ import (
 	"web_file_explorer/utils"
 )
 
-func dirHandler(c *gin.Context, path *string) {
+func DirHandlerCached(c *gin.Context, path *string) {
+	if c.Request.Method == http.MethodHead {
+		c.Header("isdir", "true")
+		c.Status(http.StatusOK)
+		return
+	}
+
 	results, err := traverse.DirFileInfo(*path)
 	if err != nil {
 		c.String(404, err.Error())
@@ -86,7 +92,7 @@ func PathHandler() gin.HandlerFunc {
 
 		if fi.IsDir() {
 			if userConfig.Cached {
-				dirHandler(c, &path)
+				DirHandlerCached(c, &path)
 			} else {
 				DirHandler(c, &path)
 			}

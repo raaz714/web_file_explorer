@@ -37,7 +37,16 @@ func main() {
 
 	go IntializeTraverse(&userConfig)
 
-	router := gin.Default()
+	if userConfig.Silent {
+		gin.SetMode(gin.ReleaseMode)
+	}
+	router := gin.New()
+
+	if !userConfig.Silent {
+		router.Use(gin.Logger())
+	}
+	router.Use(gin.Recovery())
+
 	router.Use(Options)
 
 	router.Use(static.Serve("/", static.EmbedFolder(staticFS, "react-build")))

@@ -53,6 +53,11 @@ const NavBar = ({ mode, toggleColorMode }) => {
   return (
     <div className='navbar bg-base-200'>
       <div className='w-full'>
+        <img
+          className='w-10 rounded-full border-2 border-info'
+          src='/logo.png'
+          alt='logo'
+        />
         <div className='text-xl w-full text-center md:w-fit font-semibold ml-4'>
           File Browser
         </div>

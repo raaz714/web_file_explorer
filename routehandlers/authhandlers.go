@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+	"web_file_explorer/config"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -12,22 +13,12 @@ import (
 
 var secretKey = []byte("secret-key")
 
-type User struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-var users = map[string]User{
-	"raaz":   {Username: "raaz", Password: "123456"},
-	"shamit": {Username: "shamit", Password: "abcdef"},
-}
-
 func LoginHandler(c *gin.Context) {
 
-	var u User
+	var u config.User
 	c.BindJSON(&u)
 
-	user, exists := users[u.Username]
+	user, exists := config.Users[u.Username]
 
 	if exists && u.Password == user.Password {
 		tokenString, err := CreateToken(u.Username)

@@ -1,19 +1,42 @@
 package config
 
+import (
+	"fmt"
+	"os"
+	"strings"
+
+	"github.com/spf13/viper"
+)
+
 type UserConfig struct {
-	Root   string
-	Port   int
-	Hidden bool
-	Cached bool
+	Root   string   `mapstructure:"root"`
+	Port   int      `mapstructure:"port"`
+	Hidden bool     `mapstructure:"hidden"`
+	Cached bool     `mapstructure:"cached"`
+	Auth   []string `mapstructure:"auth"`
+	Silent bool     `mapstructure:"silent"`
 }
+
+type User struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+var Users = map[string]User{}
 
 var config UserConfig
 
-func InitConfig(root *string, port *int, hidden *bool, cached *bool) {
-	config.Root = *root
-	config.Port = *port
-	config.Hidden = *hidden
-	config.Cached = *cached
+func InitConfigWithViper() {
+	viper.Unmarshal(&config)
+
+	for _, u := range config.Auth {
+		stringSlice := strings.Split(u, ":")
+		if len(stringSlice) < 2 {
+			fmt.Printf("malformed auth input - %s\n, format should be user:password", u)
+			os.Exit(-1)
+		}
+		Users[stringSlice[0]] = User{stringSlice[0], stringSlice[1]}
+	}
 }
 
 func GetConfig() UserConfig {

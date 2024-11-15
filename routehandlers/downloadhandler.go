@@ -20,7 +20,7 @@ func DownloadHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 
 		relativePath := c.Param("relativePath")
-		basePath := c.Query("basepath")
+		basePath := c.Query("basename")
 
 		w := zip.NewWriter(c.Writer)
 		defer w.Close()

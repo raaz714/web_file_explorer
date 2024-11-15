@@ -65,7 +65,15 @@ func CutHandler() gin.HandlerFunc {
 				return
 			}
 		}
-		// TODO: delete the original file
+
+		for _, filepath := range data.Sources {
+			err := utils.ExecuteDelete(userConfig.Root + "/" + filepath)
+			if err != nil {
+				c.AbortWithError(http.StatusBadRequest, err)
+				return
+			}
+		}
+
 		c.Status(http.StatusOK)
 	}
 	return fn

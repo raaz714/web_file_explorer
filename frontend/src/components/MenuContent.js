@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { newFileFolder } from '../utils/apiUtils'
 
 const FileNameDialog = ({ open, handleSubmit, handleClose }) => {
   return (
@@ -50,31 +50,12 @@ const MenuContent = () => {
   const navigate = useNavigate()
 
   const handleSubmit = (value) => {
-    const url = '/_execute/' + (createType === 'file' ? 'newfile' : 'newfolder')
-    let data = {}
-
-    switch (createType) {
-      case 'file':
-        data = { folderpath: pathname, filename: value }
-        break
-      case 'folder':
-        data = { folderpath: pathname, foldername: value }
-        break
-      default:
-        return
-    }
-
-    const options = {
-      method: 'POST',
-      url: url,
-      headers: { 'Content-Type': 'application/json' },
-      data: data,
-    }
-
-    axios
-      .request(options)
-      .then(function (response) {})
-      .catch(function (error) {
+    const newFileFolderPromise = newFileFolder(createType, value, pathname)
+    newFileFolderPromise
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
         console.error(error)
       })
   }

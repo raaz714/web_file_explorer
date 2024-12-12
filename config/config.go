@@ -13,6 +13,7 @@ type UserConfig struct {
 	Port   int      `mapstructure:"port"`
 	Hidden bool     `mapstructure:"hidden"`
 	Cached bool     `mapstructure:"cached"`
+	NoAuth bool     `mapstructure:"noauth"`
 	Auth   []string `mapstructure:"auth"`
 	Silent bool     `mapstructure:"silent"`
 }
@@ -29,6 +30,9 @@ var config UserConfig
 func InitConfigWithViper() {
 	viper.Unmarshal(&config)
 
+	if config.NoAuth {
+		return
+	}
 	for _, u := range config.Auth {
 		stringSlice := strings.Split(u, ":")
 		if len(stringSlice) < 2 {

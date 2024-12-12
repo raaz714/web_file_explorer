@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useLocation } from 'react-router-dom'
-import axios from 'axios'
 import { humanFileSize } from '../utils/utils'
+import { doUpload } from '../utils/apiUtils'
 
 const InputFileUpload = () => {
   const [files, setFiles] = useState([])
@@ -66,20 +66,17 @@ const InputFileUpload = () => {
       form.append('upload[]', file)
     })
 
-    axios
-      .post(`/_upload?destination=${pathname}`, form, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        onUploadProgress: (p) => {
-          setProgress((p.loaded / p.total) * 100)
-        },
-      })
+    const uploadPromie = doUpload(form, pathname, setProgress)
+    uploadPromie
       .then(() => {
         setProgress(100)
         setTimeout(() => {
           setProgress(-1)
+          setFiles([])
         }, 100)
+      })
+      .catch((error) => {
+        console.error(error)
       })
   }
 

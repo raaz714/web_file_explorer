@@ -18,7 +18,10 @@ import (
 
 func InitializeConfig() {
 	flag.StringP("root", "r", ".", "root path to serve from")
-	flag.IntP("port", "p", 9876, "port to start server")
+	flag.IntP("port",
+		"p",
+		9876,
+		"port to start server")
 	flag.BoolP(
 		"hidden",
 		"d",
@@ -32,6 +35,11 @@ func InitializeConfig() {
 			"useful for situations when the serving directory does not change"+
 			" after the app startup\n"+
 			"much faster as it bypasses disk i/o while serving directory tree",
+	)
+	flag.Bool("noauth",
+		false,
+		"requires no authentication\n"+
+			"if passed, \"auth\" flag will be ignored",
 	)
 	flag.StringSliceP("auth",
 		"a",

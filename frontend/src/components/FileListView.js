@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { formattedDateTime, humanFileSize } from '../utils/utils'
 import { SelectedFilesContext } from '../contexts/SelectedFilesContext'
 import { getIcon } from '../utils/iconUtils'
-import axios from 'axios'
 import { PathContext } from '../contexts/PathContext'
+import { processRename } from '../utils/apiUtils'
 
 const FileListView = ({ rows }) => {
   const [selectedRows, setSelectedRows] = useState([])
@@ -72,25 +72,14 @@ const FileListView = ({ rows }) => {
   const handleRename = (event, data) => {
     event.stopPropagation()
     const renamedFile = prompt('Enter new file/folder name', data.Name)
-    if (renamedFile !== '' && renamedFile !== data.Name) {
-      console.log('raname ', data.Path, ' to ', renamedFile)
-
-      const options = {
-        method: 'POST',
-        url: '/_execute/rename',
-        headers: { 'Content-Type': 'application/json' },
-        data: { oldname: data.Path, newname: pathname + '/' + renamedFile },
-      }
-
-      axios
-        .request(options)
-        .then(function (response) {
-          fetchRowsFromLocation()
-        })
-        .catch(function (error) {
-          console.error(error)
-        })
-    }
+    const renamePromise = processRename(renamedFile, data, pathname)
+    renamePromise
+      .then((reponse) => {
+        fetchRowsFromLocation()
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   return (

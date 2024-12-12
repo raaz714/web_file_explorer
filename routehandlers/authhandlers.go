@@ -14,6 +14,13 @@ import (
 var secretKey = []byte("secret-key")
 
 func LoginHandler(c *gin.Context) {
+	userConfig := config.GetConfig()
+
+	if userConfig.NoAuth {
+		tokenString, _ := CreateToken("dummy")
+		c.JSON(http.StatusOK, gin.H{"token": tokenString, "username": "dummy"})
+		return
+	}
 
 	var u config.User
 	c.BindJSON(&u)
@@ -33,6 +40,12 @@ func LoginHandler(c *gin.Context) {
 }
 
 func AuthMiddleware(c *gin.Context) {
+	userConfig := config.GetConfig()
+
+	if userConfig.NoAuth {
+		c.Next()
+		return
+	}
 	cookie, _ := c.Cookie("_auth")
 	if cookie == "" {
 		c.AbortWithStatus(http.StatusUnauthorized)

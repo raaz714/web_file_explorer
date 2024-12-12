@@ -1,7 +1,7 @@
 import useSignIn from 'react-auth-kit/hooks/useSignIn'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { doSignIn } from '../utils/apiUtils'
 
 export default function SignIn() {
   const [mode, setMode] = useState('light')
@@ -30,18 +30,9 @@ export default function SignIn() {
     const username = data.get('username')
     const password = data.get('password')
 
-    const options = {
-      method: 'POST',
-      url: '_auth/login',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: { username: username, password: password },
-    }
-
-    axios
-      .request(options)
-      .then(function (response) {
+    const signInPromise = doSignIn(username, password)
+    signInPromise
+      .then((response) => {
         if (
           signIn({
             auth: {
@@ -56,8 +47,9 @@ export default function SignIn() {
           navigate('/')
         }
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.error(error)
+        navigate('/login')
       })
   }
 

@@ -3,27 +3,40 @@ package routehandlers
 import (
 	"errors"
 	"fmt"
+	"math/rand/v2"
 	"net/http"
 	"time"
 	"web_file_explorer/config"
+	"web_file_explorer/htmxtempls"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var secretKey = []byte("secret-key")
+var secretKey = []byte(fmt.Sprintf("%v", rand.Int64()))
+
+func SigninHandler(c *gin.Context) {
+	userConfig := config.GetConfig()
+
+	if userConfig.NoAuth {
+		c.Redirect(http.StatusFound, "/")
+		return
+	}
+
+	component := htmxtempls.LoginPage()
+	c.HTML(200, "", component)
+}
 
 func LoginHandler(c *gin.Context) {
 	userConfig := config.GetConfig()
 
 	if userConfig.NoAuth {
-		tokenString, _ := CreateToken("dummy")
-		c.JSON(http.StatusOK, gin.H{"token": tokenString, "username": "dummy"})
+		c.Redirect(http.StatusFound, "/")
 		return
 	}
 
 	var u config.User
-	c.BindJSON(&u)
+	c.Bind(&u)
 
 	user, exists := config.Users[u.Username]
 
@@ -33,7 +46,8 @@ func LoginHandler(c *gin.Context) {
 			c.AbortWithStatus(http.StatusInternalServerError)
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"token": tokenString, "username": user.Username})
+		c.SetCookie("_auth", tokenString, 3600, "/", c.Request.Host, false, true)
+		c.Header("Hx-Redirect", "/")
 	} else {
 		c.AbortWithError(http.StatusUnauthorized, errors.New("invalid credentials"))
 	}
@@ -48,7 +62,7 @@ func AuthMiddleware(c *gin.Context) {
 	}
 	cookie, _ := c.Cookie("_auth")
 	if cookie == "" {
-		c.AbortWithStatus(http.StatusUnauthorized)
+		c.Redirect(http.StatusFound, "/_signin")
 		return
 	} else {
 		token, err := jwt.Parse(cookie, func(token *jwt.Token) (interface{}, error) {
@@ -57,16 +71,16 @@ func AuthMiddleware(c *gin.Context) {
 			}
 			return secretKey, nil
 		})
-
 		if err != nil {
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.Redirect(http.StatusFound, "/_signin")
 			return
 		}
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			c.Set("authinfo", claims)
 		} else {
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.Redirect(http.StatusFound, "/_signin")
+			return
 		}
 
 		c.Next()
@@ -92,7 +106,6 @@ func VerifyToken(tokenString string) error {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return secretKey, nil
 	})
-
 	if err != nil {
 		return err
 	}

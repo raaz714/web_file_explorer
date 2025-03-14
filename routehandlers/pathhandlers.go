@@ -6,12 +6,11 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-
-	"github.com/gin-gonic/gin"
-
 	"web_file_explorer/config"
 	"web_file_explorer/traverse"
 	"web_file_explorer/utils"
+
+	"github.com/gin-gonic/gin"
 )
 
 func DirHandlerCached(c *gin.Context, path *string) {

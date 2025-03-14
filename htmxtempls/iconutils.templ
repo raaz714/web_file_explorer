@@ -1,0 +1,168 @@
+package htmxtempls
+
+import (
+	"strings"
+	"web_file_explorer/traverse"
+)
+
+templ FolderIcon(className string) {
+	<svg class={ className } focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="FolderIcon">
+		<path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8z"></path>
+	</svg>
+}
+
+templ DescriptionIcon(className string) {
+	<svg class={ className } focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DescriptionIcon">
+		<path
+			d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8zm2 16H8v-2h8zm0-4H8v-2h8zm-3-5V3.5L18.5 9z"
+		></path>
+	</svg>
+}
+
+templ ImageIcon(className string) {
+	<svg class={ className } xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+		<path d="M0 0h24v24H0z" fill="none"></path>
+		<path
+			d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"
+		></path>
+	</svg>
+}
+
+templ AudioFileIcon(className string) {
+	<svg class={ className } xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+		<path d="M0 0h24v24H0z" fill="none"></path>
+		<path
+			d="M12 3v9.28c-.47-.17-.97-.28-1.5-.28C8.01 12 6 14.01 6 16.5S8.01 21 10.5 21c2.31 0 4.2-1.75 4.45-4H15V6h4V3h-7z"
+		></path>
+	</svg>
+}
+
+templ VideoFileIcon(className string) {
+	<svg class={ className } xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+		<path d="M0 0h24v24H0z" fill="none"></path>
+		<path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"></path>
+	</svg>
+}
+
+templ PictureAsPdfIcon(className string) {
+	<svg class={ className } xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+		<path d="M0 0h24v24H0z" fill="none"></path>
+		<path
+			d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"
+		></path>
+	</svg>
+}
+
+templ GetIcon(item *traverse.FileInfo) {
+	if item.IsDir {
+		@FolderIcon("w-full h-full fill-blue-500")
+		{{ return }}
+	}
+	{{ ext := item.Extension }}
+	{{ ext = strings.ToLower(ext) }}
+	switch (ext) {
+		case ".jpg":
+			@ImageIcon("w-auto h-auto fill-orange-400")
+		case ".jpeg":
+			@ImageIcon("w-auto h-auto fill-orange-400")
+		case ".svg":
+			@ImageIcon("w-auto h-auto fill-orange-400")
+		case ".gif":
+			@ImageIcon("w-auto h-auto fill-orange-400")
+		case ".png":
+			@ImageIcon("w-auto h-auto fill-orange-400")
+		case ".bmp":
+			@ImageIcon("w-auto h-auto fill-orange-400")
+		case ".wmv":
+			@VideoFileIcon("w-auto h-auto fill-orange-800")
+		case ".mp4":
+			@VideoFileIcon("w-auto h-auto fill-orange-800")
+		case ".avi":
+			@VideoFileIcon("w-auto h-auto fill-orange-800")
+		case ".avchd":
+			@VideoFileIcon("w-auto h-auto fill-orange-800")
+		case ".flv":
+			@VideoFileIcon("w-auto h-auto fill-orange-800")
+		case ".f4v":
+			@VideoFileIcon("w-auto h-auto fill-orange-800")
+		case ".swf":
+			@VideoFileIcon("w-auto h-auto fill-orange-800")
+		case ".mkv":
+			@VideoFileIcon("w-auto h-auto fill-orange-800")
+		case ".webm":
+			@VideoFileIcon("w-auto h-auto fill-orange-800")
+		case ".aac":
+			@AudioFileIcon("w-auto h-auto fill-teal-400")
+		case ".m4a":
+			@AudioFileIcon("w-auto h-auto fill-teal-400")
+		case ".wma":
+			@AudioFileIcon("w-auto h-auto fill-teal-400")
+		case ".wav":
+			@AudioFileIcon("w-auto h-auto fill-teal-400")
+		case ".flac":
+			@AudioFileIcon("w-auto h-auto fill-teal-400")
+		case ".mp3":
+			@AudioFileIcon("w-auto h-auto fill-teal-400")
+		case ".pdf":
+			@PictureAsPdfIcon("w-auto h-auto fill-red-400")
+		default:
+			@DescriptionIcon("w-auto h-auto fill-gray-500")
+	}
+}
+
+templ GetIconFlat(item *traverse.FileInfo) {
+	if item.IsDir {
+		<i class="fi fi-sr-folder"></i>
+		{{ return }}
+	}
+	{{ ext := item.Extension }}
+	{{ ext = strings.ToLower(ext) }}
+	switch (ext) {
+		case ".jpg":
+			<i class="fi fi-rr-picture"></i>
+		case ".jpeg":
+			<i class="fi fi-rr-picture"></i>
+		case ".svg":
+			<i class="fi fi-rr-picture"></i>
+		case ".gif":
+			<i class="fi fi-rr-picture"></i>
+		case ".png":
+			<i class="fi fi-rr-picture"></i>
+		case ".bmp":
+			<i class="fi fi-rr-picture"></i>
+		case ".wmv":
+			<i class="fi fi-rr-film"></i>
+		case ".mp4":
+			<i class="fi fi-rr-film"></i>
+		case ".avi":
+			<i class="fi fi-rr-film"></i>
+		case ".avchd":
+			<i class="fi fi-rr-film"></i>
+		case ".flv":
+			<i class="fi fi-rr-film"></i>
+		case ".f4v":
+			<i class="fi fi-rr-film"></i>
+		case ".swf":
+			<i class="fi fi-rr-film"></i>
+		case ".mkv":
+			<i class="fi fi-rr-film"></i>
+		case ".webm":
+			<i class="fi fi-rr-film"></i>
+		case ".aac":
+			<i class="fi fi-rr-music-file"></i>
+		case ".m4a":
+			<i class="fi fi-rr-music-file"></i>
+		case ".wma":
+			<i class="fi fi-rr-music-file"></i>
+		case ".wav":
+			<i class="fi fi-rr-music-file"></i>
+		case ".flac":
+			<i class="fi fi-rr-music-file"></i>
+		case ".mp3":
+			<i class="fi fi-rr-music-file"></i>
+		case ".pdf":
+			<i class="fi fi-rr-file-pdf"></i>
+		default:
+			<i class="fi fi-rr-document"></i>
+	}
+}

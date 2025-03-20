@@ -8,7 +8,7 @@ The frontend and backend are implemented separately and merged into a finaly int
 binary which makes it highly efficient and scalable.
 
 1. The backend is written in `go`
-2. The frontend is implented using `react` with [`daisy ui`](https://daisyui.com/)
+2. The frontend is implented using golang `templ` framework with [`daisy ui`](https://daisyui.com/) and [`Uiicons by Flaticon`](https://www.flaticon.com/uicons)
 
 ## Installation
 

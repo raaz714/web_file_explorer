@@ -1,0 +1,89 @@
+package htmxtempls
+
+import "fmt"
+import "web_file_explorer/traverse"
+import humanize "github.com/dustin/go-humanize"
+
+templ folderCard(file *traverse.FileInfo) {
+	if file.IsDir {
+		<div
+			hx-target="#mainview"
+			hx-swap="outerHTML"
+			hx-get={ file.Path }
+			hx-push-url="true"
+			title={ file.Name }
+			class="bg-base-100 w-52 h-20 flex flex-row items-center rounded-lg border-1 cursor-pointer border-[#ffffff28]"
+		>
+			<div class="w-1/3 mx-2 text-5xl text-primary">
+				@GetIconFlat(file)
+			</div>
+			<p class="w-2/3 inline whitespace-nowrap overflow-hidden text-lg text-ellipsis">
+				{ file.Name }
+			</p>
+		</div>
+	}
+}
+
+templ fileRow(item *traverse.FileInfo) {
+	if !item.IsDir {
+		<tr>
+			<th>
+				<label>
+					<input
+						type="checkbox"
+						class="checkbox file-row-select"
+						onclick={ templ.JSFuncCall("onCheckboxClickHandler") }
+						autocomplete="off"
+						value={ item.Path }
+					/>
+				</label>
+			</th>
+			<td hx-boost="true">
+				<div class="flex items-center gap-3">
+					<div
+						hx-target="#mainview"
+						hx-swap="outerHTML"
+						hx-get={ item.Path }
+						hx-push-url="true"
+						title={ item.Name }
+						class="h-12 w-12 bg-base-200 rounded-lg overflow-hidden"
+					>
+						<div class="h-full box-border text-2xl flex justify-center items-center">
+							@GetIconFlat(item)
+						</div>
+					</div>
+					<div hx-target="#mainview" hx-swap="outerHTML" hx-get={ item.Path } class="w-3/4 overflow-hidden text-ellipsis">
+						<div class="font-bold inline whitespace-nowrap">{ item.Name }</div>
+						<div class="text-sm opacity-50">{ item.Extension }</div>
+					</div>
+					<div class="text-lg ml-auto">
+						<i class="fi fi-rr-menu-dots-vertical"></i>
+					</div>
+				</div>
+			</td>
+			<td class="hidden lg:table-cell">
+				<span class="badge badge-ghost badge-lg">
+					{ fmt.Sprintf("%s", humanize.Bytes(uint64(item.Size))) }
+				</span>
+			</td>
+			<td class="hidden lg:table-cell">
+				<span>
+					{ fmt.Sprintf("%s", humanize.Time(item.LastModified)) }
+				</span>
+			</td>
+		</tr>
+	}
+}
+
+templ themeSwitcher() {
+	<a title="Theme" class="flex flex-col justify-center">
+		<label class="swap swap-rotate text-lg">
+			<!-- this hidden checkbox controls the state -->
+			<input type="checkbox" class="theme-controller" value="dark"/>
+			<!-- sun icon -->
+			<i class="swap-off fi fi-rr-brightness"></i>
+			<!-- moon icon -->
+			<i class="swap-on fi fi-rr-moon"></i>
+		</label>
+	</a>
+}

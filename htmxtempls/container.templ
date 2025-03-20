@@ -1,0 +1,30 @@
+package htmxtempls
+
+templ Head() {
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="icon" type="image/x-icon" href="/_static/_static-assets/images/favicon.ico"/>
+		<link href="/_static/_static-assets/css/daisyui@5" rel="stylesheet" type="text/css"/>
+		<!-- <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/> -->
+		<link rel="stylesheet" href="/_static/_static-assets/css/uicons-regular-straight.css"/>
+		<link rel="stylesheet" href="/_static/_static-assets/css/uicons-regular-rounded.css"/>
+		<link rel="stylesheet" href="/_static/_static-assets/css/uicons-solid-rounded.css"/>
+		<script src="/_static/_static-assets/js/browser@4"></script>
+		<script src="/_static/_static-assets/js/htmx.min.js" crossorigin="anonymous"></script>
+		<!-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script> -->
+		<script src="/_static/_static-assets/js/select-utils.js"></script>
+	</head>
+}
+
+templ FullPageContainer() {
+	<html>
+		@Head()
+		<body>
+			<div class="h-full flex justify-center items-center">
+				<div class="flex flex-row w-full h-full xl:h-10/12 xl:w-10/12 rounded-box shadow-md justify-center overflow-hidden">
+					{ children... }
+				</div>
+			</div>
+		</body>
+	</html>
+}

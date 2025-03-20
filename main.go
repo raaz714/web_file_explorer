@@ -4,15 +4,15 @@ import (
 	"embed"
 	"fmt"
 	"net/http"
-
-	"github.com/gin-contrib/static"
-	"github.com/gin-gonic/gin"
-
 	"web_file_explorer/config"
+	"web_file_explorer/gintemplrenderer"
 	"web_file_explorer/routehandlers"
+
+	// "github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
 )
 
-//go:embed all:react-build
+//go:embed all:_static-assets
 var staticFS embed.FS
 
 func Options(c *gin.Context) {
@@ -45,52 +45,37 @@ func main() {
 	if !userConfig.Silent {
 		router.Use(gin.Logger())
 	}
+
+	ginHtmlRenderer := router.HTMLRender
+	router.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
+
 	router.Use(gin.Recovery())
 
 	router.Use(Options)
 
-	router.Use(static.Serve("/", static.EmbedFolder(staticFS, "react-build")))
+	/**
+	 * htmx based routes
+	 */
+	router.StaticFS("/_static", http.FS(staticFS))
 
-	authGroup := router.Group("/_auth")
-	{
-		authGroup.POST("/login", routehandlers.LoginHandler)
-	}
+	router.GET("/_signin", routehandlers.SigninHandler)
+	router.POST("/_login", routehandlers.LoginHandler)
 
-	pathGroup := router.Group("/_api", routehandlers.AuthMiddleware)
-	{
-		pathGroup.HEAD("/*relativePath", routehandlers.PathHandler())
-		pathGroup.GET("/*relativePath", routehandlers.PathHandler())
-	}
+	router.GET("/_file_/*relativePath", routehandlers.FileHandlerHTMX())
+	router.GET("/_sub/*sub", routehandlers.SubHandler)
 
-	router.GET(
-		"/_download/*relativePath",
-		routehandlers.AuthMiddleware,
-		routehandlers.DownloadHandler(),
-	)
-	router.HEAD(
-		"/_download/*relativePath",
-		routehandlers.AuthMiddleware,
-		routehandlers.DownloadHandler(),
-	)
-	router.GET("/_sub/*sub", routehandlers.AuthMiddleware, routehandlers.SubHandler)
+	router.POST("/_search", routehandlers.SearchHandlerHTMX())
 
 	exeGroup := router.Group("/_execute", routehandlers.AuthMiddleware)
 	{
 		exeGroup.POST("/copy", routehandlers.CopyHandler())
 		exeGroup.POST("/cut", routehandlers.CutHandler())
 		exeGroup.POST("/remove", routehandlers.RemoveHandler())
-		exeGroup.POST("/rename", routehandlers.RenameHandler())
-		exeGroup.POST("/newfile", routehandlers.NewFileHandler())
-		exeGroup.POST("/newfolder", routehandlers.NewFolderHandler())
 	}
 
-	router.POST("/_upload", routehandlers.AuthMiddleware, routehandlers.UploadHandler())
+	// TODO: download directory as zip, new file and folder handler
 
-	router.GET("/_search", routehandlers.AuthMiddleware, routehandlers.SearchHandler())
-
-	router.NoRoute(func(c *gin.Context) {
-		c.FileFromFS("react-build/", http.FS(staticFS))
-	})
+	router.NoRoute(routehandlers.AuthMiddleware, routehandlers.PathHandlerHTMX())
 
 	router.Run(fmt.Sprintf(":%d", userConfig.Port))
 }

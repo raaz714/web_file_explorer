@@ -1,0 +1,18 @@
+package htmxtempls
+
+templ LoginPage() {
+	@FullPageContainer() {
+		<form class="flex flex-col gap-4 h-full items-center justify-center" hx-post="/_login" hx-redirect="/">
+			<img class="rounded-lg w-48" alt="" src="/_static/_static-assets/images/logo.png"/>
+			<label class="input">
+				<i class="fi fi-rr-user"></i>
+				<input type="text" placeholder="username" name="username" required/>
+			</label>
+			<label class="input">
+				<i class="fi fi-rr-key-car"></i>
+				<input type="password" required name="password" placeholder="Password"/>
+			</label>
+			<button type="submit" class="btn btn-primary w-full">Login</button>
+		</form>
+	}
+}

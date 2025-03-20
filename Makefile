@@ -1,4 +1,4 @@
-VERSION=0.2.0
+VERSION=0.3.0
 
 all: frontend wfe
 
@@ -7,10 +7,9 @@ wfe:
 
 prebuild:
 	go mod download
-	cd frontend && npm i
 
 frontend:
-	cd frontend && npm run build
+	templ generate 
 
 dockerimage: frontend wfe
 	docker build . -t wfe

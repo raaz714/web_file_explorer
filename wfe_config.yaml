@@ -1,0 +1,6 @@
+root: /media/raaz/HDD/Media/
+port: 8080
+hidden: false
+cached: true
+silent: true
+auth: raaz:123456,shamit:098765

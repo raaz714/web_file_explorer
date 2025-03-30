@@ -1,6 +1,6 @@
 VERSION=0.3.0
 
-all: frontend wfe
+all: prebuild frontend wfe
 
 wfe:
 	CGO_ENABLED=0 go build -ldflags "-s -w" -o wfe .
@@ -10,6 +10,7 @@ prebuild:
 
 frontend:
 	templ generate 
+	npx tailwindcss -i ./app.css -o ./_static-assets/css/output.css
 
 dockerimage: frontend wfe
 	docker build . -t wfe
@@ -22,4 +23,4 @@ release:
 clean:
 	rm -rf react-build dist wfe
 
-.PHONY: frontend prebuild clean
+.PHONY: wfe frontend prebuild clean

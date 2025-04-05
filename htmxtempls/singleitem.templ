@@ -79,11 +79,11 @@ templ themeSwitcher() {
 	<a title="Theme" class="flex flex-col justify-center">
 		<label class="swap swap-rotate text-lg">
 			<!-- this hidden checkbox controls the state -->
-			<input type="checkbox" class="theme-controller" value="dark"/>
+			<input id="themeCheckBox" type="checkbox" autocomplete="off" onclick={ templ.JSFuncCall("switchTheme") }/>
 			<!-- sun icon -->
-			<i class="swap-off fi fi-rr-brightness"></i>
+			<i id="light_icon" class="swap-off fi fi-rr-brightness"></i>
 			<!-- moon icon -->
-			<i class="swap-on fi fi-rr-moon"></i>
+			<i id="dark_icon" class="swap-on fi fi-rr-moon"></i>
 		</label>
 	</a>
 }

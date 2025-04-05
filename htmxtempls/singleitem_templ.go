@@ -271,7 +271,24 @@ func themeSwitcher() templ.Component {
 			templ_7745c5c3_Var15 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<a title=\"Theme\" class=\"flex flex-col justify-center\"><label class=\"swap swap-rotate text-lg\"><!-- this hidden checkbox controls the state --><input type=\"checkbox\" class=\"theme-controller\" value=\"dark\"><!-- sun icon --><i class=\"swap-off fi fi-rr-brightness\"></i><!-- moon icon --><i class=\"swap-on fi fi-rr-moon\"></i></label></a>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<a title=\"Theme\" class=\"flex flex-col justify-center\"><label class=\"swap swap-rotate text-lg\"><!-- this hidden checkbox controls the state -->")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.JSFuncCall("switchTheme"))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<input id=\"themeCheckBox\" type=\"checkbox\" autocomplete=\"off\" onclick=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var16 templ.ComponentScript = templ.JSFuncCall("switchTheme")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var16.Call)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\"><!-- sun icon --><i id=\"light_icon\" class=\"swap-off fi fi-rr-brightness\"></i><!-- moon icon --><i id=\"dark_icon\" class=\"swap-on fi fi-rr-moon\"></i></label></a>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

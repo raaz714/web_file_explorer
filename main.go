@@ -74,6 +74,7 @@ func main() {
 	}
 
 	// TODO: download directory as zip, new file and folder handler
+	router.GET("/_download/*relativePath", routehandlers.AuthMiddleware, routehandlers.DownloadHandler())
 
 	router.NoRoute(routehandlers.AuthMiddleware, routehandlers.PathHandlerHTMX())
 

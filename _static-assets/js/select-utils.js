@@ -137,5 +137,8 @@ const triggerDelete = () => {
     })
     .catch((e) => {
       console.error("error while calling ", url, e);
+    })
+    .finally(() => {
+      toggleCutCopyDeleteMenu(false);
     });
 };

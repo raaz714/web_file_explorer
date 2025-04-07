@@ -2,6 +2,9 @@ VERSION=0.3.0
 
 all: prebuild frontend wfe
 
+run: clean all
+	./wfe -r ~/ -p 8000 --noauth 
+
 wfe:
 	CGO_ENABLED=0 go build -ldflags "-s -w" -o wfe .
 

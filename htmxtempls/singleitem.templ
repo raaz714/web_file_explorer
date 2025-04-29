@@ -80,7 +80,13 @@ templ fileRow(item *traverse.FileInfo) {
 							@GetIcon(item)
 						</div>
 					</div>
-					<div hx-target="#mainview" hx-swap="outerHTML" hx-get={ item.Path } class="w-3/4 overflow-hidden text-ellipsis">
+					<div
+						hx-target="#mainview"
+						hx-swap="outerHTML"
+						hx-get={ item.Path }
+						hx-push-url="true"
+						class="w-3/4 overflow-hidden text-ellipsis"
+					>
 						<div class="font-bold inline whitespace-nowrap">{ item.Name }</div>
 						<div class="text-sm opacity-50">{ item.Extension }</div>
 					</div>

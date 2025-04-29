@@ -2,7 +2,6 @@
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
-    --color-red-400: oklch(0.704 0.191 22.216);
     --spacing: 0.25rem;
     --container-xs: 20rem;
     --text-sm: 0.875rem;
@@ -1065,9 +1064,6 @@
   }
   .fill-base-content {
     fill: var(--color-base-content);
-  }
-  .fill-red-400 {
-    fill: var(--color-red-400);
   }
   .checkbox-sm {
     padding: 0.1875rem;

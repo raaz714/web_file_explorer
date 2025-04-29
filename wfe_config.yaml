@@ -1,4 +1,4 @@
-root: /media/raaz/HDD/Media/
+root: /home/raaz/
 port: 8080
 hidden: false
 cached: true

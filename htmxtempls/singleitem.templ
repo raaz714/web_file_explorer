@@ -16,20 +16,38 @@ templ folderCard(file *traverse.FileInfo) {
 			class="bg-base-100 w-52 h-20 flex flex-row items-center rounded-lg border-1 cursor-pointer border-[#ffffff28]"
 		>
 			<div class="w-3/12 mx-2 text-5xl text-primary">
-				@GetIconFlat(file)
+				@GetIcon(file)
 			</div>
 			<p class="w-7/12 inline whitespace-nowrap overflow-hidden text-lg text-ellipsis">
 				{ file.Name }
 			</p>
-			<label class="w-2/12 mx-1">
-				<input
-					type="checkbox"
-					class="checkbox checkbox-sm file-row-select"
-					onclick={ templ.JSFuncCall("onCheckboxClickHandler") }
-					autocomplete="off"
-					value={ file.Path }
-				/>
-			</label>
+			<div class="flex flex-col items-center">
+				<label>
+					<input
+						type="checkbox"
+						class="checkbox checkbox-sm file-row-select"
+						onclick={ templ.JSFuncCall("onCheckboxClickHandler") }
+						autocomplete="off"
+						value={ file.Path }
+					/>
+				</label>
+				<a class="btn btn-link" href={ templ.SafeURL("/_download" + file.Path) } target="_blank">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="size-6"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+						></path>
+					</svg>
+				</a>
+			</div>
 		</div>
 	}
 }
@@ -58,8 +76,8 @@ templ fileRow(item *traverse.FileInfo) {
 						title={ item.Name }
 						class="h-12 w-12 bg-base-200 rounded-lg overflow-hidden"
 					>
-						<div class="h-full box-border text-2xl flex justify-center items-center">
-							@GetIconFlat(item)
+						<div class="h-full box-border flex justify-center items-center p-2">
+							@GetIcon(item)
 						</div>
 					</div>
 					<div hx-target="#mainview" hx-swap="outerHTML" hx-get={ item.Path } class="w-3/4 overflow-hidden text-ellipsis">
@@ -67,7 +85,20 @@ templ fileRow(item *traverse.FileInfo) {
 						<div class="text-sm opacity-50">{ item.Extension }</div>
 					</div>
 					<div class="text-lg ml-auto">
-						<i class="fi fi-rr-menu-dots-vertical"></i>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="size-6"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+							></path>
+						</svg>
 					</div>
 				</div>
 			</td>
@@ -91,9 +122,39 @@ templ themeSwitcher() {
 			<!-- this hidden checkbox controls the state -->
 			<input id="themeCheckBox" type="checkbox" autocomplete="off" onclick={ templ.JSFuncCall("switchTheme") }/>
 			<!-- sun icon -->
-			<i id="light_icon" class="swap-off fi fi-rr-brightness"></i>
+			<i id="light_icon" class="swap-off">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="size-6"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+					></path>
+				</svg>
+			</i>
 			<!-- moon icon -->
-			<i id="dark_icon" class="swap-on fi fi-rr-moon"></i>
+			<i id="dark_icon" class="swap-on">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="size-6"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+					></path>
+				</svg>
+			</i>
 		</label>
 	</a>
 }

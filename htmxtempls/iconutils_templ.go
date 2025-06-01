@@ -222,107 +222,17 @@ func GetIcon(item *traverse.FileInfo) templ.Component {
 		ext := item.Extension
 		ext = strings.ToLower(ext)
 		switch ext {
-		case ".jpg":
+		case ".jpg", ".jpeg", ".svg", ".gif", ".png", ".bmp":
 			templ_7745c5c3_Err = ImageIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-		case ".jpeg":
-			templ_7745c5c3_Err = ImageIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".svg":
-			templ_7745c5c3_Err = ImageIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".gif":
-			templ_7745c5c3_Err = ImageIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".png":
-			templ_7745c5c3_Err = ImageIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".bmp":
-			templ_7745c5c3_Err = ImageIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".wmv":
+		case ".wmv", ".mp4", ".avi", ".avchd", ".flv", ".f4v", ".swf", ".mkv", ".webm":
 			templ_7745c5c3_Err = VideoFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-		case ".mp4":
-			templ_7745c5c3_Err = VideoFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".avi":
-			templ_7745c5c3_Err = VideoFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".avchd":
-			templ_7745c5c3_Err = VideoFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".flv":
-			templ_7745c5c3_Err = VideoFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".f4v":
-			templ_7745c5c3_Err = VideoFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".swf":
-			templ_7745c5c3_Err = VideoFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".mkv":
-			templ_7745c5c3_Err = VideoFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".webm":
-			templ_7745c5c3_Err = VideoFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".aac":
-			templ_7745c5c3_Err = AudioFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".m4a":
-			templ_7745c5c3_Err = AudioFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".wma":
-			templ_7745c5c3_Err = AudioFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".wav":
-			templ_7745c5c3_Err = AudioFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".flac":
-			templ_7745c5c3_Err = AudioFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		case ".mp3":
+		case ".aac", ".m4a", ".wma", ".wav", ".flac", ".mp3":
 			templ_7745c5c3_Err = AudioFileIcon("w-auto h-auto").Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

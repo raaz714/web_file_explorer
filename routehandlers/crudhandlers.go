@@ -3,11 +3,11 @@ package routehandlers
 import (
 	"net/http"
 	"path/filepath"
-
-	"github.com/gin-gonic/gin"
-
 	"web_file_explorer/config"
 	"web_file_explorer/utils"
+
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type PastableList struct {
@@ -31,6 +31,20 @@ type RenameObject struct {
 func CopyHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
+
+		authinfo, exists := c.Get("authinfo")
+		if !exists {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+		username := authinfo.(jwt.MapClaims)["username"]
+
+		userPerm, exists := config.Users[username.(string)]
+		if !userPerm.WritePermission {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
 		var data PasteObject
 		err := c.BindJSON(&data)
 		if err != nil {
@@ -52,6 +66,20 @@ func CopyHandler() gin.HandlerFunc {
 func CutHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
+
+		authinfo, exists := c.Get("authinfo")
+		if !exists {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+		username := authinfo.(jwt.MapClaims)["username"]
+
+		userPerm, exists := config.Users[username.(string)]
+		if !userPerm.DeletePermission {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
 		var data PasteObject
 		err := c.BindJSON(&data)
 		if err != nil {
@@ -82,6 +110,20 @@ func CutHandler() gin.HandlerFunc {
 func RemoveHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
+
+		authinfo, exists := c.Get("authinfo")
+		if !exists {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+		username := authinfo.(jwt.MapClaims)["username"]
+
+		userPerm, exists := config.Users[username.(string)]
+		if !userPerm.DeletePermission {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
 		var removeObject RemoveObject
 		err := c.BindJSON(&removeObject)
 		if err != nil {
@@ -103,6 +145,20 @@ func RemoveHandler() gin.HandlerFunc {
 func RenameHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
+
+		authinfo, exists := c.Get("authinfo")
+		if !exists {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+		username := authinfo.(jwt.MapClaims)["username"]
+
+		userPerm, exists := config.Users[username.(string)]
+		if !userPerm.WritePermission {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
 		var renameObject RenameObject
 		err := c.BindJSON(&renameObject)
 		if err != nil {
@@ -125,6 +181,20 @@ func NewFileHandler() gin.HandlerFunc {
 	}
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
+
+		authinfo, exists := c.Get("authinfo")
+		if !exists {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+		username := authinfo.(jwt.MapClaims)["username"]
+
+		userPerm, exists := config.Users[username.(string)]
+		if !userPerm.WritePermission {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
 		var newFileObject NewFileObject
 		err := c.BindJSON(&newFileObject)
 		if err != nil {
@@ -145,6 +215,20 @@ func NewFolderHandler() gin.HandlerFunc {
 	}
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
+
+		authinfo, exists := c.Get("authinfo")
+		if !exists {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+		username := authinfo.(jwt.MapClaims)["username"]
+
+		userPerm, exists := config.Users[username.(string)]
+		if !userPerm.WritePermission {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
 		var newFolderObject NewFolderObject
 		err := c.BindJSON(&newFolderObject)
 		if err != nil {

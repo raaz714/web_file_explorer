@@ -98,7 +98,7 @@ func RenderFolderHTMX(c *gin.Context, results []*traverse.FileInfo) {
 	if isHTMXStr == "true" {
 		isHTMX = true
 	}
-	component := htmxtempls.FolderPage(results, &pathList, &splitPath, isHTMX)
+	component := htmxtempls.FolderPage(results, &traverse.FTBuckets, &pathList, &splitPath, isHTMX)
 	c.HTML(200, "", component)
 }
 
@@ -130,7 +130,7 @@ func RenderFileHTMX(c *gin.Context, path *string, relativePath *string) {
 	if isHTMXStr == "true" {
 		isHTMX = true
 	}
-	component := htmxtempls.FilePage(*relativePath, getComponentType(fileMime.String()), isHTMX)
+	component := htmxtempls.FilePage(*relativePath, &traverse.FTBuckets, getComponentType(fileMime.String()), isHTMX)
 	c.HTML(200, "", component)
 }
 

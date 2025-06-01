@@ -81,6 +81,7 @@ templ iterateAndShowFolders(results []*traverse.FileInfo, pathList *[]string, pa
 }
 
 templ FolderPage(results []*traverse.FileInfo,
+	ftBucket *traverse.FiletypeBuckets,
 	pathList *[]string,
 	pathNameList *[]string,
 	isHTMX bool) {
@@ -90,6 +91,7 @@ templ FolderPage(results []*traverse.FileInfo,
 		@FullPageContainer() {
 			@LeftNav()
 			@iterateAndShowFolders(results, pathList, pathNameList)
+			@RightNav(ftBucket)
 			@FooterNav()
 		}
 	}

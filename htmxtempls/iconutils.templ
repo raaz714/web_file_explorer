@@ -92,47 +92,11 @@ templ GetIcon(item *traverse.FileInfo) {
 	{{ ext := item.Extension }}
 	{{ ext = strings.ToLower(ext) }}
 	switch (ext) {
-		case ".jpg":
+		case ".jpg",".jpeg",".svg",".gif",".png",".bmp":
 			@ImageIcon("w-auto h-auto")
-		case ".jpeg":
-			@ImageIcon("w-auto h-auto")
-		case ".svg":
-			@ImageIcon("w-auto h-auto")
-		case ".gif":
-			@ImageIcon("w-auto h-auto")
-		case ".png":
-			@ImageIcon("w-auto h-auto")
-		case ".bmp":
-			@ImageIcon("w-auto h-auto")
-		case ".wmv":
+		case ".wmv",".mp4",".avi",".avchd",".flv",".f4v",".swf",".mkv",".webm":
 			@VideoFileIcon("w-auto h-auto")
-		case ".mp4":
-			@VideoFileIcon("w-auto h-auto")
-		case ".avi":
-			@VideoFileIcon("w-auto h-auto")
-		case ".avchd":
-			@VideoFileIcon("w-auto h-auto")
-		case ".flv":
-			@VideoFileIcon("w-auto h-auto")
-		case ".f4v":
-			@VideoFileIcon("w-auto h-auto")
-		case ".swf":
-			@VideoFileIcon("w-auto h-auto")
-		case ".mkv":
-			@VideoFileIcon("w-auto h-auto")
-		case ".webm":
-			@VideoFileIcon("w-auto h-auto")
-		case ".aac":
-			@AudioFileIcon("w-auto h-auto")
-		case ".m4a":
-			@AudioFileIcon("w-auto h-auto")
-		case ".wma":
-			@AudioFileIcon("w-auto h-auto")
-		case ".wav":
-			@AudioFileIcon("w-auto h-auto")
-		case ".flac":
-			@AudioFileIcon("w-auto h-auto")
-		case ".mp3":
+		case ".aac",".m4a",".wma",".wav",".flac",".mp3":
 			@AudioFileIcon("w-auto h-auto")
 		case ".pdf":
 			@PictureAsPdfIcon("w-auto h-auto")

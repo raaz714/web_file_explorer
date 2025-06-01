@@ -19,8 +19,10 @@ type UserConfig struct {
 }
 
 type User struct {
-	Username string `json:"username" form:"username"`
-	Password string `json:"password" form:"password"`
+	Username         string `json:"username" form:"username"`
+	Password         string `json:"password" form:"password"`
+	WritePermission  bool
+	DeletePermission bool
 }
 
 var Users = map[string]User{}
@@ -39,7 +41,18 @@ func InitConfigWithViper() {
 			fmt.Printf("malformed auth input - %s\n, format should be user:password", u)
 			os.Exit(-1)
 		}
-		Users[stringSlice[0]] = User{stringSlice[0], stringSlice[1]}
+		writePerm := false
+		deletPerm := false
+		if len(stringSlice) > 2 {
+			writePerm = strings.Contains(stringSlice[2], "w")
+			deletPerm = strings.Contains(stringSlice[2], "d")
+		}
+		Users[stringSlice[0]] = User{
+			stringSlice[0],
+			stringSlice[1],
+			writePerm,
+			deletPerm,
+		}
 	}
 }
 

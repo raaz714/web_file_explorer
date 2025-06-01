@@ -188,6 +188,7 @@ func iterateAndShowFolders(results []*traverse.FileInfo, pathList *[]string, pat
 }
 
 func FolderPage(results []*traverse.FileInfo,
+	ftBucket *traverse.FiletypeBuckets,
 	pathList *[]string,
 	pathNameList *[]string,
 	isHTMX bool) templ.Component {
@@ -242,6 +243,14 @@ func FolderPage(results []*traverse.FileInfo,
 					return templ_7745c5c3_Err
 				}
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, " ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = RightNav(ftBucket).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

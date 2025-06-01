@@ -25,7 +25,7 @@ func SearchHandler() gin.HandlerFunc {
 			limit = int(x)
 		}
 		folder := path.Clean(filepath.Join(config.GetConfig().Root, dir))
-		ctx.JSON(http.StatusOK, traverse.FuzzySearch1(query, folder, limit))
+		ctx.JSON(http.StatusOK, traverse.FuzzySearch(query, folder, limit))
 	}
 	return fn
 }
@@ -43,7 +43,7 @@ func SearchHandlerHTMX() gin.HandlerFunc {
 			limit = int(x)
 		}
 		folder := path.Clean(filepath.Join(config.GetConfig().Root, dir))
-		searchResults := traverse.FuzzySearch1(query, folder, limit)
+		searchResults := traverse.FuzzySearch(query, folder, limit)
 
 		sort.Slice(searchResults,
 			func(i int, j int) bool { // custom less function

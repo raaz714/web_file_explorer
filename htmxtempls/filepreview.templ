@@ -1,5 +1,7 @@
 package htmxtempls
 
+import "web_file_explorer/traverse"
+
 templ fileComponentRender(filePath, fileType string) {
 	<div class="flex w-full h-full items-center justify-center bg-base-300">
 		switch fileType {
@@ -36,13 +38,14 @@ templ fileComponentRender(filePath, fileType string) {
 	</div>
 }
 
-templ FilePage(filePath string, fileType string, isHTMX bool) {
+templ FilePage(filePath string, ftBucket *traverse.FiletypeBuckets, fileType string, isHTMX bool) {
 	if isHTMX {
 		@fileComponentRender(filePath, fileType)
 	} else {
 		@FullPageContainer() {
 			@LeftNav()
 			@fileComponentRender(filePath, fileType)
+			@RightNav(ftBucket)
 			@FooterNav()
 		}
 	}

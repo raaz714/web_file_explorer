@@ -1,0 +1,87 @@
+package htmxtempls
+
+import (
+	"fmt"
+	"github.com/dustin/go-humanize"
+	"web_file_explorer/traverse"
+)
+
+templ RightNav(ftBucket *traverse.FiletypeBuckets) {
+	{{ var totalSize int64 = 0 }}
+	{{for _, item := range *ftBucket {
+	totalSize += item.Totalsize
+}
+	}}
+	<div class="hidden lg:flex flex-col justify-between items-center w-[15%]">
+		<ul class="list bg-base-200 w-full h-full gap-4 text-sm">
+			<li class="list-row">
+				<div class="h-12 w-12 rounded-lg box-border bg-base-100 flex justify-center items-center p-2">
+					@ImageIcon("")
+				</div>
+				<div>
+					<div class="flex items-center justify-start">Images</div>
+					<div class="text-xs uppercase font-semibold opacity-60">
+						{ fmt.Sprintf("%d Files | %s", (*ftBucket)["img"].Count, humanize.Bytes(uint64((*ftBucket)["img"].Totalsize))) }
+					</div>
+					<progress
+						class="mt-4 progress progress-primary w-56"
+						value={ fmt.Sprintf("%d", (*ftBucket)["img"].Totalsize *
+          100 / totalSize ) }
+						max="100"
+					></progress>
+				</div>
+			</li>
+			<li class="list-row">
+				<div class="h-12 w-12 rounded-lg box-border bg-base-100 flex justify-center items-center p-2">
+					@VideoFileIcon("")
+				</div>
+				<div>
+					<div class="flex items-center justify-start">Videos</div>
+					<div class="text-xs uppercase font-semibold opacity-60">
+						{ fmt.Sprintf("%d Files | %s", (*ftBucket)["vid"].Count, humanize.Bytes(uint64((*ftBucket)["vid"].Totalsize))) }
+					</div>
+					<progress
+						class="mt-4 progress progress-secondary w-56"
+						value={ fmt.Sprintf("%d", (*ftBucket)["vid"].Totalsize *
+          100 / totalSize ) }
+						max="100"
+					></progress>
+				</div>
+			</li>
+			<li class="list-row">
+				<div class="h-12 w-12 rounded-lg box-border bg-base-100 flex justify-center items-center p-2">
+					@AudioFileIcon("")
+				</div>
+				<div>
+					<div class="flex items-center justify-start">Audios</div>
+					<div class="text-xs uppercase font-semibold opacity-60">
+						{ fmt.Sprintf("%d Files | %s", (*ftBucket)["aud"].Count, humanize.Bytes(uint64((*ftBucket)["aud"].Totalsize))) }
+					</div>
+					<progress
+						class="mt-4 progress progress-accent w-56"
+						value={ fmt.Sprintf("%d", (*ftBucket)["aud"].Totalsize *
+          100/ totalSize ) }
+						max="100"
+					></progress>
+				</div>
+			</li>
+			<li class="list-row">
+				<div class="h-12 w-12 rounded-lg box-border bg-base-100 flex justify-center items-center p-2">
+					@DescriptionIcon("")
+				</div>
+				<div>
+					<div class="flex items-center justify-start">Documets</div>
+					<div class="text-xs uppercase font-semibold opacity-60">
+						{ fmt.Sprintf("%d Files | %s", (*ftBucket)["doc"].Count, humanize.Bytes(uint64((*ftBucket)["doc"].Totalsize))) }
+					</div>
+					<progress
+						class="mt-4 progress progress-info w-56"
+						value={ fmt.Sprintf("%d", (*ftBucket)["doc"].Totalsize * 100/
+          totalSize ) }
+						max="100"
+					></progress>
+				</div>
+			</li>
+		</ul>
+	</div>
+}

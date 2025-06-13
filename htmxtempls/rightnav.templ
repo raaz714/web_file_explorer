@@ -19,8 +19,8 @@ templ RightNav(ftBucket *traverse.FiletypeBuckets) {
 					@ImageIcon("")
 				</div>
 				<div>
-					<div class="flex items-center justify-start">Images</div>
-					<div class="text-xs uppercase font-semibold opacity-60">
+					<div class="flex items-center justify-end">Images</div>
+					<div class="flex justify-end text-xs uppercase font-semibold opacity-60">
 						{ fmt.Sprintf("%d Files | %s", (*ftBucket)["img"].Count, humanize.Bytes(uint64((*ftBucket)["img"].Totalsize))) }
 					</div>
 					<progress
@@ -36,8 +36,8 @@ templ RightNav(ftBucket *traverse.FiletypeBuckets) {
 					@VideoFileIcon("")
 				</div>
 				<div>
-					<div class="flex items-center justify-start">Videos</div>
-					<div class="text-xs uppercase font-semibold opacity-60">
+					<div class="flex items-center justify-end">Videos</div>
+					<div class="flex justify-end text-xs uppercase font-semibold opacity-60">
 						{ fmt.Sprintf("%d Files | %s", (*ftBucket)["vid"].Count, humanize.Bytes(uint64((*ftBucket)["vid"].Totalsize))) }
 					</div>
 					<progress
@@ -53,8 +53,8 @@ templ RightNav(ftBucket *traverse.FiletypeBuckets) {
 					@AudioFileIcon("")
 				</div>
 				<div>
-					<div class="flex items-center justify-start">Audios</div>
-					<div class="text-xs uppercase font-semibold opacity-60">
+					<div class="flex items-center justify-end">Audios</div>
+					<div class="flex justify-end text-xs uppercase font-semibold opacity-60">
 						{ fmt.Sprintf("%d Files | %s", (*ftBucket)["aud"].Count, humanize.Bytes(uint64((*ftBucket)["aud"].Totalsize))) }
 					</div>
 					<progress
@@ -70,8 +70,8 @@ templ RightNav(ftBucket *traverse.FiletypeBuckets) {
 					@DescriptionIcon("")
 				</div>
 				<div>
-					<div class="flex items-center justify-start">Documets</div>
-					<div class="text-xs uppercase font-semibold opacity-60">
+					<div class="flex items-center justify-end">Documets</div>
+					<div class="flex justify-end text-xs uppercase font-semibold opacity-60">
 						{ fmt.Sprintf("%d Files | %s", (*ftBucket)["doc"].Count, humanize.Bytes(uint64((*ftBucket)["doc"].Totalsize))) }
 					</div>
 					<progress

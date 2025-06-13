@@ -1,6 +1,8 @@
 package htmxtempls
 
-templ LeftNav() {
+import "fmt"
+
+templ LeftNav(userName string) {
 	<div class="hidden lg:flex flex-col justify-between items-center w-[5%]">
 		<ul class="menu bg-base-200 w-full h-full gap-4 text-sm">
 			<li>
@@ -111,6 +113,29 @@ templ LeftNav() {
 				<a title="btunnel" class="flex flex-col justify-center" href="https://www.btunnel.in">
 					<img class="w-6 h-6" src="/_static/_static-assets/images/bt.png" alt="btunnel"/>
 				</a>
+			</li>
+			<li tabindex="0" class="flex flex-col">
+				<div title={ userName } class="avatar avatar-placeholder">
+					<div class="bg-neutral text-neutral-content w-8 rounded-full">
+						<span class="text-xs">{ fmt.Sprintf("%c", []rune(userName)[0]) }</span>
+					</div>
+				</div>
+				<button title="Logout" hx-get="/_logout" class="btn btn-circle">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="w-6 h-6"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+						></path>
+					</svg>
+				</button>
 			</li>
 		</ul>
 		<!-- <form action="/file-upload" class="dropzone" id="my-awesome-dropzone"></form> -->

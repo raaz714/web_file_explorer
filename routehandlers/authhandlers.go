@@ -41,7 +41,7 @@ func LoginHandler(c *gin.Context) {
 	user, exists := config.Users[u.Username]
 
 	if exists && u.Password == user.Password {
-		tokenString, err := CreateToken(u.Username)
+		tokenString, err := CreateToken(&u)
 		if err != nil {
 			c.AbortWithStatus(http.StatusInternalServerError)
 			return
@@ -51,6 +51,11 @@ func LoginHandler(c *gin.Context) {
 	} else {
 		c.AbortWithError(http.StatusUnauthorized, errors.New("invalid credentials"))
 	}
+}
+
+func LogoutHandler(c *gin.Context) {
+	c.SetCookie("_auth", "", -1, "/", "", false, true)
+	c.Header("Hx-Redirect", "/")
 }
 
 func AuthMiddleware(c *gin.Context) {
@@ -87,11 +92,22 @@ func AuthMiddleware(c *gin.Context) {
 	}
 }
 
-func CreateToken(username string) (string, error) {
+func getPermissionString(u *config.User) string {
+	perm := "R"
+	if u.DeletePermission {
+		perm += "WD"
+	} else if u.WritePermission {
+		perm = perm + "W"
+	}
+	return perm
+}
+
+func CreateToken(u *config.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"username": username,
-			"exp":      time.Now().Add(time.Hour * 24).Unix(),
+			"username":    u.Username,
+			"permissions": getPermissionString(u),
+			"exp":         time.Now().Add(time.Hour * 24).Unix(),
 		})
 
 	tokenString, err := token.SignedString(secretKey)

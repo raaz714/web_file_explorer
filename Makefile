@@ -3,8 +3,8 @@ VERSION=0.3.0
 all: prebuild frontend wfe
 
 run: clean all
-	# ./wfe -r ~/ -p 8000 --noauth 
-	./wfe -r ~/ -p 8000 --auth raaz:123456,shamit:098765 
+	./wfe -r ~/ -p 8000 --noauth 
+	# ./wfe -r ~/ -p 8000 --auth raaz:123456,shamit:098765 
 
 wfe:
 	CGO_ENABLED=0 go build -ldflags "-s -w" -o wfe .

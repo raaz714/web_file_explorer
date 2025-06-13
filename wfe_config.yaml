@@ -1,6 +1,6 @@
 root: /home/raaz/
 port: 8080
 hidden: false
-cached: true
-silent: true
-auth: raaz:123456,shamit:098765
+cached: false
+silent: false
+auth: raaz:123456,shamit:098765:w

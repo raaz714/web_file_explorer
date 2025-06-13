@@ -191,6 +191,8 @@ func FolderPage(results []*traverse.FileInfo,
 	ftBucket *traverse.FiletypeBuckets,
 	pathList *[]string,
 	pathNameList *[]string,
+	userName string,
+	permission string,
 	isHTMX bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -230,7 +232,7 @@ func FolderPage(results []*traverse.FileInfo,
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = LeftNav().Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = LeftNav(userName).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

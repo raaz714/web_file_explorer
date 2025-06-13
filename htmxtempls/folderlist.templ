@@ -84,12 +84,14 @@ templ FolderPage(results []*traverse.FileInfo,
 	ftBucket *traverse.FiletypeBuckets,
 	pathList *[]string,
 	pathNameList *[]string,
+	userName string,
+	permission string,
 	isHTMX bool) {
 	if isHTMX {
 		@iterateAndShowFolders(results, pathList, pathNameList)
 	} else {
 		@FullPageContainer() {
-			@LeftNav()
+			@LeftNav(userName)
 			@iterateAndShowFolders(results, pathList, pathNameList)
 			@RightNav(ftBucket)
 			@FooterNav()

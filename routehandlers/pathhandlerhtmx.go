@@ -81,7 +81,7 @@ func customSplit(c rune) bool {
 	return c == '/'
 }
 
-func RenderFolderHTMX(c *gin.Context, results []*traverse.FileInfo) {
+func getPathList(c *gin.Context) ([]string, []string) {
 	splitPath := strings.FieldsFunc(c.Request.URL.Path, customSplit)
 	pathLen := len(splitPath)
 	var pathList []string
@@ -93,12 +93,25 @@ func RenderFolderHTMX(c *gin.Context, results []*traverse.FileInfo) {
 			pathList = append(pathList, filepath.Join(pathList[i-1], splitPath[i]))
 		}
 	}
+	return pathList, splitPath
+}
+
+func RenderFolderHTMX(c *gin.Context, results []*traverse.FileInfo) {
+	pathList, splitPath := getPathList(c)
 	isHTMXStr := c.GetHeader("hx-request")
 	isHTMX := false
 	if isHTMXStr == "true" {
 		isHTMX = true
 	}
-	component := htmxtempls.FolderPage(results, &traverse.FTBuckets, &pathList, &splitPath, isHTMX)
+	// authInfo, exists := c.Get("authinfo")
+	userName := "guest"
+	perms := "R"
+
+	// if exists {
+	// 	userName = authInfo.(jwt.MapClaims)["userName"].(string)
+	// 	perms = authInfo.(jwt.MapClaims)["permissions"].(string)
+	// }
+	component := htmxtempls.FolderPage(results, &traverse.FTBuckets, &pathList, &splitPath, userName, perms, isHTMX)
 	c.HTML(200, "", component)
 }
 
@@ -121,6 +134,7 @@ func getComponentType(fileType string) string {
 }
 
 func RenderFileHTMX(c *gin.Context, path *string, relativePath *string) {
+	pathList, splitPath := getPathList(c)
 	fileMime, err := mimetype.DetectFile(*path)
 	if err != nil {
 		c.String(http.StatusNotFound, "File %s Not Found", path)
@@ -130,7 +144,15 @@ func RenderFileHTMX(c *gin.Context, path *string, relativePath *string) {
 	if isHTMXStr == "true" {
 		isHTMX = true
 	}
-	component := htmxtempls.FilePage(*relativePath, &traverse.FTBuckets, getComponentType(fileMime.String()), isHTMX)
+	// authInfo, exists := c.Get("authinfo")
+	userName := "guest"
+	perms := "R"
+
+	// if exists {
+	// 	userName = authInfo.(jwt.MapClaims)["userName"].(string)
+	// 	perms = authInfo.(jwt.MapClaims)["permissions"].(string)
+	// }
+	component := htmxtempls.FilePage(*relativePath, &traverse.FTBuckets, &pathList, &splitPath, getComponentType(fileMime.String()), userName, perms, isHTMX)
 	c.HTML(200, "", component)
 }
 

@@ -47,7 +47,7 @@ func RightNav(ftBucket *traverse.FiletypeBuckets) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div><div><div class=\"flex items-center justify-start\">Images</div><div class=\"text-xs uppercase font-semibold opacity-60\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div><div><div class=\"flex items-center justify-end\">Images</div><div class=\"flex justify-end text-xs uppercase font-semibold opacity-60\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -82,7 +82,7 @@ func RightNav(ftBucket *traverse.FiletypeBuckets) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><div><div class=\"flex items-center justify-start\">Videos</div><div class=\"text-xs uppercase font-semibold opacity-60\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><div><div class=\"flex items-center justify-end\">Videos</div><div class=\"flex justify-end text-xs uppercase font-semibold opacity-60\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -117,7 +117,7 @@ func RightNav(ftBucket *traverse.FiletypeBuckets) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div><div><div class=\"flex items-center justify-start\">Audios</div><div class=\"text-xs uppercase font-semibold opacity-60\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div><div><div class=\"flex items-center justify-end\">Audios</div><div class=\"flex justify-end text-xs uppercase font-semibold opacity-60\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -152,7 +152,7 @@ func RightNav(ftBucket *traverse.FiletypeBuckets) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><div><div class=\"flex items-center justify-start\">Documets</div><div class=\"text-xs uppercase font-semibold opacity-60\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><div><div class=\"flex items-center justify-end\">Documets</div><div class=\"flex justify-end text-xs uppercase font-semibold opacity-60\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

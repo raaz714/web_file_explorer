@@ -29,7 +29,7 @@ func Head() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><link rel=\"icon\" type=\"image/x-icon\" href=\"/_static/_static-assets/images/favicon.ico\"><link href=\"/_static/_static-assets/css/output.css\" rel=\"stylesheet\" type=\"text/css\"><!-- <link rel=\"stylesheet\" href=\"https://unpkg.com/dropzone@5/dist/min/dropzone.min.css\" type=\"text/css\"/> --><link rel=\"stylesheet\" href=\"/_static/_static-assets/css/uicons-regular-straight.css\"><link rel=\"stylesheet\" href=\"/_static/_static-assets/css/uicons-regular-rounded.css\"><link rel=\"stylesheet\" href=\"/_static/_static-assets/css/uicons-solid-rounded.css\"><script src=\"/_static/_static-assets/js/htmx.min.js\" crossorigin=\"anonymous\"></script><!-- <script src=\"https://unpkg.com/dropzone@5/dist/min/dropzone.min.js\"></script> --><script src=\"/_static/_static-assets/js/select-utils.js\"></script><script src=\"/_static/_static-assets/js/theme-util.js\"></script></head>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><link rel=\"icon\" type=\"image/x-icon\" href=\"/_static/_static-assets/images/favicon.ico\"><link href=\"/_static/_static-assets/css/output.css\" rel=\"stylesheet\" type=\"text/css\"><!-- <link rel=\"stylesheet\" href=\"https://unpkg.com/dropzone@5/dist/min/dropzone.min.css\" type=\"text/css\"/> --><script src=\"/_static/_static-assets/js/htmx.min.js\" crossorigin=\"anonymous\"></script><!-- <script src=\"https://unpkg.com/dropzone@5/dist/min/dropzone.min.js\"></script> --><script src=\"/_static/_static-assets/js/select-utils.js\"></script><script src=\"/_static/_static-assets/js/theme-util.js\"></script></head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -58,7 +58,7 @@ func FullPageContainer() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!doctype html><html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -66,7 +66,7 @@ func FullPageContainer() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<body><div class=\"h-full flex justify-center items-center\"><div class=\"flex flex-row w-full h-full xl:h-10/12 xl:w-10/12 rounded-box shadow-md justify-center overflow-hidden\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<body><div class=\"h-dvh flex justify-center items-center\"><div class=\"flex flex-row w-full h-full xl:h-10/12 xl:w-10/12 rounded-box shadow-md justify-center overflow-hidden\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

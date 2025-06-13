@@ -60,6 +60,7 @@ func main() {
 
 	router.GET("/_signin", routehandlers.SigninHandler)
 	router.POST("/_login", routehandlers.LoginHandler)
+	router.GET("/_logout", routehandlers.LogoutHandler)
 
 	router.GET("/_file_/*relativePath", routehandlers.FileHandlerHTMX())
 	router.GET("/_sub/*sub", routehandlers.SubHandler)

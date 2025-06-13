@@ -28,19 +28,30 @@ type RenameObject struct {
 	NewName string `json:"newname"`
 }
 
+func shouldProceedWithPermission(c *gin.Context, checkFor string) bool {
+	authinfo, exists := c.Get("authinfo")
+	if !exists {
+		return false
+	}
+	username := authinfo.(jwt.MapClaims)["username"]
+
+	userPerm, exists := config.Users[username.(string)]
+	switch checkFor {
+	case "write":
+		return userPerm.WritePermission
+	case "delete":
+		return userPerm.DeletePermission
+	default:
+		return true
+	}
+}
+
 func CopyHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
 
-		authinfo, exists := c.Get("authinfo")
-		if !exists {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-		username := authinfo.(jwt.MapClaims)["username"]
-
-		userPerm, exists := config.Users[username.(string)]
-		if !userPerm.WritePermission {
+		shouldProceed := shouldProceedWithPermission(c, "write")
+		if !shouldProceed {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
@@ -67,15 +78,8 @@ func CutHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
 
-		authinfo, exists := c.Get("authinfo")
-		if !exists {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-		username := authinfo.(jwt.MapClaims)["username"]
-
-		userPerm, exists := config.Users[username.(string)]
-		if !userPerm.DeletePermission {
+		shouldProceed := shouldProceedWithPermission(c, "delete")
+		if !shouldProceed {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
@@ -111,15 +115,8 @@ func RemoveHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
 
-		authinfo, exists := c.Get("authinfo")
-		if !exists {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-		username := authinfo.(jwt.MapClaims)["username"]
-
-		userPerm, exists := config.Users[username.(string)]
-		if !userPerm.DeletePermission {
+		shouldProceed := shouldProceedWithPermission(c, "delete")
+		if !shouldProceed {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
@@ -146,15 +143,8 @@ func RenameHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
 
-		authinfo, exists := c.Get("authinfo")
-		if !exists {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-		username := authinfo.(jwt.MapClaims)["username"]
-
-		userPerm, exists := config.Users[username.(string)]
-		if !userPerm.WritePermission {
+		shouldProceed := shouldProceedWithPermission(c, "write")
+		if !shouldProceed {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
@@ -182,15 +172,8 @@ func NewFileHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
 
-		authinfo, exists := c.Get("authinfo")
-		if !exists {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-		username := authinfo.(jwt.MapClaims)["username"]
-
-		userPerm, exists := config.Users[username.(string)]
-		if !userPerm.WritePermission {
+		shouldProceed := shouldProceedWithPermission(c, "write")
+		if !shouldProceed {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
@@ -216,15 +199,8 @@ func NewFolderHandler() gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userConfig := config.GetConfig()
 
-		authinfo, exists := c.Get("authinfo")
-		if !exists {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-		username := authinfo.(jwt.MapClaims)["username"]
-
-		userPerm, exists := config.Users[username.(string)]
-		if !userPerm.WritePermission {
+		shouldProceed := shouldProceedWithPermission(c, "write")
+		if !shouldProceed {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
